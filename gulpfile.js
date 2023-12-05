@@ -99,7 +99,8 @@ function js() {
             resolve(),
             commonjs({
               namedExports: {
-                'node_modules/react/index.js': ['useState', 'useRef', 'useEffect'],
+                'node_modules/react/index.js': ['useState', 'useRef', 'useEffect','useContext'],
+                extensions: ['.js', '.ts','tsx','jsx']
               },
             }),
             replaceRollup({
