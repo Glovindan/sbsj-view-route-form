@@ -1,7 +1,9 @@
-import React from 'react'
-import { IPropsForTable } from '../../shared/types'
+import React, { useContext } from 'react'
+import Context from '../../stores/context'
 
-export default function Table({ data }: IPropsForTable) {
+export default function Table() {
+	const store = useContext(Context)
+
 	return (
 		<div className="table">
 			<div className="wrp"></div>
@@ -18,8 +20,8 @@ export default function Table({ data }: IPropsForTable) {
 			</div>
 			<div className="table__body">
 				<ul className="table__body-list-row">
-					{data && data.length
-						? data.map((project, idx) => (
+					{store.dataRender && store.dataRender.length
+						? store.dataRender.map((project, idx) => (
 								<li key={Date.now() + idx + 1} className="table__body-row">
 									<ul className="table__body-list-col">
 										<li className="table__body-col table__body-col--name">

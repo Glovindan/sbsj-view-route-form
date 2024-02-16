@@ -22,7 +22,7 @@ export default function App() {
 	return (
 		<>
 			<ButtonPanel searchHandler={buttonSearchHandler} />
-			<Table data={dataRender} />
+			<Table />
 		</>
 	)
 }
