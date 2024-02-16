@@ -1,1 +1,20 @@
-@import url('./components/Test/test.scss');
+@import url('./reset.scss');
+@import url('./App/components/ButtonPanel/buttonPanel.scss');
+@import url('./App//components/Table/table.scss');
+
+// Панель фильтрации
+.filter-panel {
+	margin-bottom: 15px;
+	&__list {
+		list-style-type: none;
+	}
+}
+
+// Сброс стандартных стилей фильтров
+.filter-panel__item--rp .button-add-element {
+	display: none !important;
+}
+
+.filter-panel__item--team .button-add-element {
+	display: none !important;
+}

@@ -1,29 +1,27 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { App } from './components/App'
-import { context } from './context'
-import Scripts from './utils/clientScripts'
+import ReactDOM from 'react-dom/client'
+import Context from './App/stores/context'
+import App from './App/App'
+import { IStore } from './App/shared/types'
 
-const wrapper = document.querySelector('#root') as HTMLElement
-const root = createRoot(wrapper)
+import Scripts from './App/shared/utils/clientScripts'
 
-const store = {
-	data: [] as any[],
+// Инициализация Хранилища данных
+const store: IStore = {
+	data: [],
+	dataRender: [],
 }
 
-async function getData() {
+async function setDataStore() {
 	store.data = await Scripts.generateDataForRender()
+	store.dataRender = structuredClone(store.data)
 }
 
-async function renderApp() {
-	await getData()
-	root.render(
-		<React.StrictMode>
-			<context.Provider value={store}>
-				<App />
-			</context.Provider>
-		</React.StrictMode>
-	)
-}
+setDataStore()
 
-renderApp()
+// Рендер приложений
+ReactDOM.createRoot(document.querySelector('#root') as HTMLElement).render(
+	<Context.Provider value={store}>
+		<App />
+	</Context.Provider>
+)

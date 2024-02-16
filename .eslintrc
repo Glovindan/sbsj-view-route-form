@@ -22,7 +22,6 @@
 		"semi": "off",
 		"quotes": ["error", "single"],
 		"no-plusplus": "off",
-		"no-shadow": ["error", { "builtinGlobals": true }],
 		"function-paren-newline": "off",
 		"arrow-body-style": "off",
 		"no-mixed-spaces-and-tabs": "off",
