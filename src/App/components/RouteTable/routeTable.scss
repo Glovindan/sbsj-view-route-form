@@ -1,0 +1,99 @@
+* {
+	// Настройки границы таблицы
+	--table-border-settings: 2px solid #dddddd;
+}
+
+// Настройки отображения таблицы маршрута
+.route-table {
+	&__row {
+		&:nth-child(even) {
+			background: white;
+		}
+
+		& > div:nth-child(4) {
+			padding: 0;
+		}
+
+		display: grid;
+		grid-template-columns: 0.5fr 1fr 1fr 2fr 1fr;
+		border-bottom: var(--table-border-settings);
+
+		& > div {
+			box-sizing: border-box !important;
+			overflow: hidden;
+			word-wrap: break-word;
+			width: 100%;
+			padding: 20px 8px;
+
+			/* Последовательно */
+			font-family: 'Montserrat';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 12px;
+
+			color: #474747;
+
+			border-left: var(--table-border-settings);
+			&:first-child {
+				border-left: none;
+			}
+		}
+	}
+
+	// Шапка таблицы
+	&__header {
+		&:nth-child(odd) {
+			background: white !important;
+		}
+
+		& > div {
+			font-family: 'Montserrat';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 12px;
+			color: #108e55;
+		}
+	}
+}
+
+.route-table-body {
+	&__row {
+		display: grid;
+		grid-template-columns: 0.5fr 1fr 1fr 2fr 1fr;
+
+		&:nth-child(odd) {
+			background: #f0f0f0;
+		}
+		&:nth-child(even) {
+			background: #ffffff;
+		}
+
+		& > div:nth-child(4) {
+			padding: 0;
+		}
+	}
+}
+
+.sub-table {
+	&__body {
+		display: grid;
+		grid-template-rows: repeat(auto, 1fr);
+	}
+	&__row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+
+		&:nth-child(odd) {
+			background: #f8f8f8;
+		}
+		&:nth-child(even) {
+			background: #f0f0f0;
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}
