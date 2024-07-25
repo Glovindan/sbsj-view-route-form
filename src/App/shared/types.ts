@@ -20,21 +20,40 @@ export class RouteItem {
 	}
 }
 
+/** Типы ролей */
+export enum RoleType {
+	/** Группа */
+	group = 'group',
+	/** Пользователь */
+	user = 'user',
+	/** Оргструктура */
+	orgstruct = 'orgstruct',
+}
+
 /** Элемент таблицы Роль */
 export class RoleItem {
-	/** Идентификатор Роли */
-	roleId: string
-	/** Название Роли */
-	roleName: string
-	/** Название Роли */
-	roleType: string
+	/** Тип роли */
+	roleType: RoleType
 	/** Статус согласования */
 	status: string
 
+	/** Идентификатор Сотрудника */
+	employeeId: string
+	/** Название Сотрудника */
+	employeeName: string
+
+	/** Идентификатор Группы */
+	groupId?: string
+	/** Название Группы */
+	groupName?: string
+
 	constructor() {
-		this.roleId = ''
-		this.roleName = ''
-		this.roleType = ''
+		this.employeeId = ''
+		this.employeeName = ''
+		this.roleType = RoleType.user
 		this.status = ''
 	}
 }
+
+/** Функция обратного вызова добавления роли */
+export type AddRoleCallback = (roleItems: RoleItem[]) => void

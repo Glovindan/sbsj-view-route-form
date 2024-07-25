@@ -1,10 +1,35 @@
 * {
 	// Настройки границы таблицы
-	--table-border-settings: 2px solid #dddddd;
+	--table-border-settings: 1px solid #dddddd;
+	// Цвет ссылки
+	--color-theme-button-and-links: #1e6599;
+	// Цвет ссылки (Наведение)
+	--color-theme-main-darken-10: #030a0f;
 }
 
 // Настройки отображения таблицы маршрута
 .route-table {
+	&__user-link {
+		border-bottom: 1px dashed var(--color-theme-button-and-links);
+		color: var(--color-theme-button-and-links);
+		cursor: pointer;
+
+		&:hover {
+			color: var(--color-theme-main-darken-10);
+			border-bottom-color: var(--color-theme-main-darken-10);
+		}
+	}
+
+	&__link {
+		color: var(--color-theme-button-and-links);
+		cursor: pointer;
+
+		&:hover {
+			color: var(--color-theme-main-darken-10);
+			border-bottom: 1px solid var(--color-theme-main-darken-10);
+		}
+	}
+
 	&__row {
 		&:nth-child(even) {
 			background: white;
@@ -30,7 +55,6 @@
 			font-style: normal;
 			font-weight: 400;
 			font-size: 14px;
-			line-height: 12px;
 
 			color: #474747;
 
@@ -77,6 +101,25 @@
 }
 
 .sub-table {
+	&__add-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		grid-template-columns: 1fr;
+		padding: 20px 8px;
+		cursor: pointer;
+		background-color: #f0f0f0;
+		color: #474747;
+
+		&:hover {
+			background-color: #d8d8d8;
+		}
+
+		& svg > path {
+			stroke: #474747;
+		}
+	}
+
 	&__body {
 		display: grid;
 		grid-template-rows: repeat(auto, 1fr);

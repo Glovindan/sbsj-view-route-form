@@ -1,20 +1,28 @@
-import { RoleItem, RouteItem } from '../types'
+import { AddRoleCallback, RoleItem, RoleType, RouteItem } from '../types'
 
 /**  Получение данных маршрута согласования */
 async function getRouteData(): Promise<RouteItem[]> {
-	const rowItem = new RouteItem()
+	const routeItems: RouteItem[] = []
 
-	const roleItem = new RoleItem()
-	roleItem.roleName = 'Test T.'
-	roleItem.roleId = 'test_id'
-	roleItem.roleType = 'user'
-	roleItem.status = 'Согласовано'
+	for (let index = 0; index < 3; index++) {
+		const rowItem = new RouteItem()
+		rowItem.step = index
 
-	const roles = [roleItem, roleItem, roleItem]
+		const roleItem = new RoleItem()
+		roleItem.roleType = RoleType.group
+		roleItem.employeeId = 'test_id'
+		roleItem.employeeName = 'Test T.'
+		roleItem.status = 'Согласовано'
+		roleItem.groupId = 'test_id'
+		roleItem.groupName = '123'
 
-	rowItem.roles = roles
+		const roles = [roleItem, roleItem, roleItem]
+		rowItem.roles = roles
 
-	return [rowItem, rowItem, rowItem]
+		routeItems.push(rowItem)
+	}
+
+	return routeItems
 }
 
 /**  Сохранение данных маршрута согласования */
@@ -22,7 +30,21 @@ async function saveRouteData(routeData: RouteItem[]): Promise<void> {
 	return
 }
 
+/** Открыть окно выбора роли */
+async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
+	const roleItem = new RoleItem()
+	roleItem.roleType = RoleType.group
+	roleItem.employeeId = 'test_id'
+	roleItem.employeeName = 'Test T.'
+	roleItem.status = 'Согласовано'
+	roleItem.groupId = 'test_id'
+	roleItem.groupName = '123'
+
+	return addRoleCallback([roleItem])
+}
+
 export default {
 	getRouteData,
 	saveRouteData,
+	toggleAddRole,
 }
