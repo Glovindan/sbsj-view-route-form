@@ -147,11 +147,11 @@
 .sub-table {
 	&__body {
 		display: grid;
-		grid-template-rows: repeat(auto, 1fr);
+		grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
 	}
 	&__row {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 		border-width: 1px;
 		& > div {
 			border-width: 1px;
@@ -166,6 +166,10 @@
 
 		&:last-child {
 			border-bottom: none;
+		}
+
+		&_single {
+			grid-template-columns: 1fr;
 		}
 	}
 }

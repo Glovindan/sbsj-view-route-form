@@ -33,7 +33,7 @@ async function saveRouteData(routeData: RouteItem[]): Promise<void> {
 /** Открыть окно выбора роли */
 async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
 	const roleItem = new RoleItem()
-	roleItem.roleType = RoleType.group
+	roleItem.roleType = RoleType.orgstruct
 	roleItem.employeeId = 'test_id'
 	roleItem.employeeName = 'Test T.'
 	roleItem.status = 'Согласовано'
@@ -47,8 +47,8 @@ async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
 function getSettings(): TableSettings {
 	const settings = new TableSettings()
 
-	settings.isReadOnly = true
-	settings.isShowStatus = true
+	settings.isReadOnly = false
+	settings.isShowStatus = false
 
 	return settings
 }

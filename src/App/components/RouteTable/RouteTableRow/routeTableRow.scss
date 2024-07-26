@@ -1,24 +1,18 @@
 .route-input-field {
-	border: var(--table-border-settings);
-	outline: none;
-	border-radius: 8px;
-	cursor: pointer;
+	padding: 4px !important;
+	border: var(--table-border-settings) !important;
+	outline: none !important;
+	border-radius: 8px !important;
+	cursor: pointer !important;
 
-	font-family: 'Montserrat';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	color: #108e55;
+	font-family: 'Montserrat' !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	color: #108e55 !important;
 
 	&:focus {
-		border-color: #cccccc;
-	}
-
-	&:disabled {
-		cursor: text;
-		border: none;
-		background-color: transparent;
-		-webkit-appearance: none;
-		-moz-appearance: none;
+		border-color: #cccccc !important;
+		box-shadow: none !important;
 	}
 }

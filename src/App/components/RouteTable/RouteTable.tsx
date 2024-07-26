@@ -13,6 +13,7 @@ interface RouteTableRowProps {
 /** Таблица Маршрута согласования */
 export default function RouteTable({ }: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
+	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
 	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getSettings())
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 
@@ -24,6 +25,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const getRouteData = async () => {
 		const data = await Scripts.getRouteData();
 		setRouteData(data);
+		setInitialRouteData(data)
 	}
 
 	/** Создание функции Добавить роль */
@@ -73,6 +75,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	/** Обработка нажатия на кнопку отмены */
 	const handleCancelClick = () => {
+		setRouteData(initialRouteData)
 		getRouteData()
 		setIsEditMode(false)
 	}

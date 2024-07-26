@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useContext } from 'react'
-import { AddRoleCallback, RouteItem } from '../../../shared/types'
+import { AddRoleCallback, RoleType, RouteItem } from '../../../shared/types'
 import { redirectSPA } from '../../../shared/utils/utils';
 import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
@@ -91,11 +91,19 @@ export default function RouteTableRow({ data, addRoleCallback, setRowData, isEdi
 			<div className="sub-table__body">
 				{
 					data.roles.map(role =>
-						<div className="route-table__row sub-table__row">
+						<div className={`route-table__row sub-table__row ${isShowStatus ? '' : 'sub-table__row_single'}`}>
 							<div>
 								<span className="route-table__user-link" onClick={() => onClickUser(role.employeeId)}>{role.employeeName}</span>
 								{
-									role.groupId != undefined && <span> (<span className="route-table__link" onClick={() => onClickGroup(role.groupId!)}>{role.groupName}</span>)</span>
+									role.groupId != undefined &&
+									<span>&nbsp;
+										(<span
+											className={role.roleType == RoleType.group ? "route-table__link" : ""}
+											onClick={role.roleType == RoleType.group ? () => onClickGroup(role.groupId!) : () => { }}
+										>
+											{role.groupName}
+										</span>)
+									</span>
 								}
 							</div>
 							{
