@@ -1,4 +1,4 @@
-import { AddRoleCallback, RoleItem, RoleType, RouteItem } from '../types'
+import { AddRoleCallback, RoleItem, RoleType, RouteItem, TableSettings } from '../types'
 
 /**  Получение данных маршрута согласования */
 async function getRouteData(): Promise<RouteItem[]> {
@@ -43,8 +43,19 @@ async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
 	return addRoleCallback([roleItem])
 }
 
+/** Получение настроек таблицы */
+function getSettings(): TableSettings {
+	const settings = new TableSettings()
+
+	settings.isReadOnly = true
+	settings.isShowStatus = true
+
+	return settings
+}
+
 export default {
 	getRouteData,
 	saveRouteData,
 	toggleAddRole,
+	getSettings,
 }

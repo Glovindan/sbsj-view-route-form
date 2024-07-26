@@ -1,14 +1,59 @@
+@import url('./AddItemButton/addItemButton.scss');
+@import url('./RouteTableRow/routeTableRow.scss');
+
 * {
 	// Настройки границы таблицы
-	--table-border-settings: 1px solid #dddddd;
+	--table-border-settings: 2px solid #dddddd;
 	// Цвет ссылки
 	--color-theme-button-and-links: #1e6599;
 	// Цвет ссылки (Наведение)
 	--color-theme-main-darken-10: #030a0f;
 }
 
+.route-table-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.route-table-actions {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+}
+
+.route-table-button {
+	background: #108e55;
+	border: 2px solid transparent;
+	border-radius: 2px;
+
+	padding: 8px 20px;
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 12px;
+	cursor: pointer;
+
+	color: #ffffff;
+
+	&_outline {
+		border-color: #108e55;
+		background: transparent;
+		color: #108e55;
+	}
+
+	&:active {
+		opacity: 0.8;
+	}
+}
+
 // Настройки отображения таблицы маршрута
 .route-table {
+	&__add-button-wrapper {
+		border-bottom: var(--table-border-settings);
+	}
+
 	&__user-link {
 		border-bottom: 1px dashed var(--color-theme-button-and-links);
 		color: var(--color-theme-button-and-links);
@@ -42,6 +87,7 @@
 		display: grid;
 		grid-template-columns: 0.5fr 1fr 1fr 2fr 1fr;
 		border-bottom: var(--table-border-settings);
+		border-width: 2px;
 
 		& > div {
 			box-sizing: border-box !important;
@@ -50,7 +96,6 @@
 			width: 100%;
 			padding: 20px 8px;
 
-			/* Последовательно */
 			font-family: 'Montserrat';
 			font-style: normal;
 			font-weight: 400;
@@ -76,7 +121,6 @@
 			font-style: normal;
 			font-weight: 600;
 			font-size: 14px;
-			line-height: 12px;
 			color: #108e55;
 		}
 	}
@@ -101,25 +145,6 @@
 }
 
 .sub-table {
-	&__add-item {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		grid-template-columns: 1fr;
-		padding: 20px 8px;
-		cursor: pointer;
-		background-color: #f0f0f0;
-		color: #474747;
-
-		&:hover {
-			background-color: #d8d8d8;
-		}
-
-		& svg > path {
-			stroke: #474747;
-		}
-	}
-
 	&__body {
 		display: grid;
 		grid-template-rows: repeat(auto, 1fr);
@@ -127,6 +152,10 @@
 	&__row {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		border-width: 1px;
+		& > div {
+			border-width: 1px;
+		}
 
 		&:nth-child(odd) {
 			background: #f8f8f8;

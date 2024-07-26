@@ -57,3 +57,16 @@ export class RoleItem {
 
 /** Функция обратного вызова добавления роли */
 export type AddRoleCallback = (roleItems: RoleItem[]) => void
+
+/** Настройки таблицы */
+export class TableSettings {
+	/** Показывать статус */
+	isShowStatus: boolean
+	/** Только для чтения */
+	isReadOnly: boolean
+
+	constructor() {
+		this.isReadOnly = false
+		this.isShowStatus = false
+	}
+}

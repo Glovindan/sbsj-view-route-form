@@ -1,0 +1,23 @@
+.add-item-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	grid-template-columns: 1fr;
+	padding: 20px 8px;
+	cursor: pointer;
+	background-color: #f0f0f0;
+	color: #474747;
+
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+
+	&:hover {
+		background-color: #d8d8d8;
+	}
+
+	& svg > path {
+		stroke: #474747;
+	}
+}

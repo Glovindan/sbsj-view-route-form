@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { SyntheticEvent, useContext } from 'react'
 import { AddRoleCallback, RouteItem } from '../../../shared/types'
 import { redirectSPA } from '../../../shared/utils/utils';
 import Scripts from '../../../shared/utils/clientScripts';
+import AddItemButton from '../AddItemButton/AddItemButton';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -9,6 +10,8 @@ interface RouteTableRowProps {
 	data: RouteItem;
 	/** Добавить роль */
 	addRoleCallback: AddRoleCallback
+	/** Изменить значения строки маршрута */
+	setRowData: (newRowItem: RouteItem) => void
 	/** Режим изменения */
 	isEditMode?: boolean
 	/** Показывать статус */
@@ -28,7 +31,7 @@ enum BooleanStr {
 }
 
 /** Строка таблицы Маршрута согласования */
-export default function RouteTableRow({ data, addRoleCallback, isEditMode: isViewMode = true, isShowStatus = false }: RouteTableRowProps) {
+export default function RouteTableRow({ data, addRoleCallback, setRowData, isEditMode = false, isShowStatus = false }: RouteTableRowProps) {
 	/** Открытие пользователя */
 	const onClickUser = (employeeId: string) => {
 		redirectSPA(`.(p:item/edms_directoties/employee/${employeeId})`)
@@ -39,23 +42,52 @@ export default function RouteTableRow({ data, addRoleCallback, isEditMode: isVie
 		redirectSPA(`(p:group/${groupId})`)
 	}
 
-	/** Иконка добавления роли */
-	const addIcon = (
-		<svg xmlns="http://www.w3.org/2000/svg" width="28px" height="28px" viewBox="0 0 24 24" fill="none">
-			<path d="M12 7V17M7 12H17" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-		</svg>
-	)
-
 	/** Нажатие на кнопку добавления роли */
 	const onClickAddRole = () => {
 		Scripts.toggleAddRole(addRoleCallback)
 	}
 
+	/** Изменение типа согласования */
+	const onChangeType = (ev: any) => {
+		data.isParallel = ev.target.value == '1';
+		setRowData(data)
+	}
+
+	/** Изменение срока согласования */
+	const onChangeTerm = (ev: any) => {
+		data.term = Number(ev.target.value);
+		setRowData(data)
+	}
+
+	/** Изменение возможности добавления */
+	const onChangeCanAddUser = (ev: any) => {
+		data.canAddUser = ev.target.value == '1';
+		setRowData(data)
+	}
+
 	return (
 		<div className="route-table__row route-table-body__row">
 			<div> {data.step} </div>
-			<div> {data.isParallel ? ApprovalType.parallel : ApprovalType.sequential} </div>
-			<div> {data.term} </div>
+			{/* Тип согласования */}
+			{
+				isEditMode
+					? (<div>
+						<select className='route-input-field' name="" id="" onChange={onChangeType} value={data.isParallel ? '1' : '0'}>
+							<option value="0">{ApprovalType.sequential}</option>
+							<option value="1">{ApprovalType.parallel}</option>
+						</select>
+					</div>)
+					: (<div> {data.isParallel ? ApprovalType.parallel : ApprovalType.sequential} </div>)
+			}
+			{/* Срок согласования */}
+			{
+				isEditMode
+					? (<div>
+						<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />
+					</div>)
+					: (<div> {data.term} </div>)
+			}
+			{/* Роли */}
 			<div className="sub-table__body">
 				{
 					data.roles.map(role =>
@@ -75,14 +107,19 @@ export default function RouteTableRow({ data, addRoleCallback, isEditMode: isVie
 						</div>
 					)
 				}
-				<div className='sub-table__add-item' onClick={onClickAddRole}>
-					<span>{addIcon}</span>
-					<span>Добавить</span>
-				</div>
-				{/* <div className="route-table__row sub-table__row">
-				</div> */}
+				{isEditMode && data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}
 			</div>
-			<div> {data.canAddUser ? BooleanStr.true : BooleanStr.false} </div>
+			{/* Возможность добавления */}
+			{
+				isEditMode
+					? (<div>
+						<select className='route-input-field' name="canAddUser" onChange={onChangeCanAddUser} value={data.canAddUser ? '1' : '0'}>
+							<option value="1">Да</option>
+							<option value="0">Нет</option>
+						</select>
+					</div>)
+					: (<div> {data.canAddUser ? BooleanStr.true : BooleanStr.false} </div>)
+			}
 		</div >
 	)
 }

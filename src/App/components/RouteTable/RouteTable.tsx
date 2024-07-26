@@ -1,23 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Scripts from '../../shared/utils/clientScripts'
-import { AddRoleCallback, RoleItem, RouteItem } from '../../shared/types';
+import { AddRoleCallback, RoleItem, RouteItem, TableSettings } from '../../shared/types';
 import RouteTableRow from './RouteTableRow/RouteTableRow';
+import AddItemButton from './AddItemButton/AddItemButton';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
 	/** Показывать статус */
-	isShowStatus?: boolean
+	// isShowStatus?: boolean
 }
 
 /** Таблица Маршрута согласования */
-export default function RouteTable({ isShowStatus = false }: RouteTableRowProps) {
+export default function RouteTable({ }: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
+	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getSettings())
+	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 
-	useEffect(() => {
-		getRouteData();
-	}, [])
-
-	useEffect(() => {
+	React.useLayoutEffect(() => {
 		getRouteData();
 	}, [])
 
@@ -36,30 +35,83 @@ export default function RouteTable({ isShowStatus = false }: RouteTableRowProps)
 				row.roles = row.roles.concat(roleItems);
 			}
 
-			console.log(routeData)
 			setRouteData([...routeData])
 		}
 	}
 
+	/** Создание функции Добавить роль */
+	const editRowFactory = (row: RouteItem) => {
+		return (newRowItem: RouteItem) => {
+			Object.assign(row, newRowItem);
+
+			setRouteData([...routeData])
+		}
+	}
+
+	/** Обработчик добавления строки в маршрут */
+	const handleAddRouteRow = () => {
+		const lastStep = routeData[routeData.length - 1].step;
+
+		const newRow = new RouteItem();
+		newRow.step = lastStep + 1;
+
+		routeData.push(newRow)
+
+		setRouteData([...routeData])
+	}
+
+	/** Обработка нажатия на кнопку редактирования */
+	const handleEditClick = () => {
+		setIsEditMode(true)
+	}
+
+	/** Обработка нажатия на кнопку сохранения */
+	const handleSaveClick = () => {
+		Scripts.saveRouteData(routeData).then(() => getRouteData());
+		setIsEditMode(false)
+	}
+
+	/** Обработка нажатия на кнопку отмены */
+	const handleCancelClick = () => {
+		getRouteData()
+		setIsEditMode(false)
+	}
+
 	return (
-		<div className="my-table route-table">
-			<div className="route-table__header route-table__row">
-				<div> Шаг </div>
-				<div> Тип согласования </div>
-				<div> Срок согласования </div>
-				<div className="sub-table__body">
-					<div className='route-table__header route-table__row sub-table__row'>
-						<div> Роль </div>
-						{isShowStatus && <div> Статус </div>}
+		<div className='route-table-wrapper'>
+			<div className="my-table route-table">
+				<div className="route-table__header route-table__row">
+					<div> Шаг </div>
+					<div> Тип согласования </div>
+					<div> Срок согласования </div>
+					<div className="sub-table__body">
+						<div className='route-table__header route-table__row sub-table__row'>
+							<div> Роль </div>
+							{tableSettings.isShowStatus && <div> Статус </div>}
+						</div>
 					</div>
+					<div> Возможность добавления </div>
 				</div>
-				<div> Возможность добавления </div>
+				<div className="route-table__body">
+					{
+						routeData.map(rowData => <RouteTableRow setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
+					}
+					{
+						isEditMode &&
+						<div className='route-table__add-button-wrapper'>
+							<AddItemButton handleAddClick={handleAddRouteRow} />
+						</div>
+					}
+				</div>
 			</div>
-			<div className="route-table__body">
-				{
-					routeData.map(rowData => <RouteTableRow data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
-				}
-			</div>
+			{
+				!tableSettings.isReadOnly &&
+				<div className='route-table-actions'>
+					{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
+					{isEditMode && <button className='route-table-button' onClick={handleSaveClick}>Сохранить</button>}
+					{isEditMode && <button className='route-table-button route-table-button_outline' onClick={handleCancelClick}>Отменить</button>}
+				</div>
+			}
 		</div>
 	)
 }
