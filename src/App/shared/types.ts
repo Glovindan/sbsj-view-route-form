@@ -10,6 +10,8 @@ export class RouteItem {
 	roles: RoleItem[]
 	/** Возможность добавления */
 	canAddUser: boolean
+	/** Удален */
+	deleted: boolean
 
 	constructor() {
 		this.step = 0
@@ -17,6 +19,23 @@ export class RouteItem {
 		this.term = 0
 		this.roles = []
 		this.canAddUser = false
+		this.deleted = false
+	}
+}
+
+/** Элемент таблицы Дополнительные согласующие */
+export class AdditionalApproverItem {
+	/** Кто привлек */
+	inviter: RoleItem
+	/** Кого привлек */
+	approver: RoleItem
+	/** Статус */
+	status: string
+
+	constructor() {
+		this.inviter = new RoleItem()
+		this.approver = new RoleItem()
+		this.status = ''
 	}
 }
 
@@ -38,9 +57,9 @@ export class RoleItem {
 	status: string
 
 	/** Идентификатор Сотрудника */
-	employeeId: string
+	employeeId?: string
 	/** Название Сотрудника */
-	employeeName: string
+	employeeName?: string
 
 	/** Идентификатор Группы */
 	groupId?: string
@@ -48,8 +67,6 @@ export class RoleItem {
 	groupName?: string
 
 	constructor() {
-		this.employeeId = ''
-		this.employeeName = ''
 		this.roleType = RoleType.user
 		this.status = ''
 	}
@@ -65,8 +82,26 @@ export class TableSettings {
 	/** Только для чтения */
 	isReadOnly: boolean
 
+	/** Возможность удаления шага */
+	canDeleteStep: boolean
+	/** Возможность добавления шага */
+	canAddStep: boolean
+	/** Возможность удаления Роли */
+	canDeleteRole: boolean
+	/** Возможность добавления Роли */
+	canAddRole: boolean
+	/** Показывать дополнительных согласующих */
+	showAdditionalApprovers: boolean
+
 	constructor() {
 		this.isReadOnly = false
 		this.isShowStatus = false
+
+		this.canDeleteStep = true
+		this.canAddStep = true
+		this.canDeleteRole = true
+		this.canAddRole = true
+
+		this.showAdditionalApprovers = true
 	}
 }

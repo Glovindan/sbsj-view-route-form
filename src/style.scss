@@ -1,6 +1,17 @@
 @import url('./reset.scss');
 @import url('./App/components/RouteTable/routeTable.scss');
+@import url('./App/components/AdditionalApprovers/additionalApprovers.scss');
+@import url('./App/components/Loader/loader.scss');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+	// Настройки границы таблицы
+	--table-border-settings: 2px solid #dddddd;
+	// Цвет ссылки
+	--color-theme-button-and-links: #1e6599;
+	// Цвет ссылки (Наведение)
+	--color-theme-main-darken-10: #030a0f;
+}
 
 // Панель фильтрации
 .filter-panel {
@@ -8,6 +19,12 @@
 	&__list {
 		list-style-type: none;
 	}
+}
+
+.tables-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 }
 
 // Сброс стандартных стилей фильтров

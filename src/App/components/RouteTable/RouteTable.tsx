@@ -3,6 +3,7 @@ import Scripts from '../../shared/utils/clientScripts'
 import { AddRoleCallback, RoleItem, RouteItem, TableSettings } from '../../shared/types';
 import RouteTableRow from './RouteTableRow/RouteTableRow';
 import AddItemButton from './AddItemButton/AddItemButton';
+import Loader from '../Loader/Loader';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -14,18 +15,26 @@ interface RouteTableRowProps {
 export default function RouteTable({ }: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
 	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
-	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getSettings())
+	const [tableSettings, setTableSettings] = useState<TableSettings>()
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	React.useLayoutEffect(() => {
-		getRouteData();
+		Scripts.getSettings().then((tableSettings) => setTableSettings(tableSettings))
 	}, [])
+
+	React.useLayoutEffect(() => {
+		if (!tableSettings) return;
+		getRouteData();
+	}, [tableSettings])
 
 	/** Получение данных Маршрута */
 	const getRouteData = async () => {
+		setIsLoading(true);
 		const data = await Scripts.getRouteData();
 		setRouteData(data);
 		setInitialRouteData(data)
+		setIsLoading(false);
 	}
 
 	/** Создание функции Добавить роль */
@@ -52,7 +61,8 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	/** Обработчик добавления строки в маршрут */
 	const handleAddRouteRow = () => {
-		const lastStep = routeData[routeData.length - 1].step;
+		const routeDataFiltered = routeData.filter(rd => !rd.deleted);
+		const lastStep = routeDataFiltered[routeDataFiltered.length - 1].step;
 
 		const newRow = new RouteItem();
 		newRow.step = lastStep + 1;
@@ -90,25 +100,30 @@ export default function RouteTable({ }: RouteTableRowProps) {
 					<div className="sub-table__body">
 						<div className='route-table__header route-table__row sub-table__row'>
 							<div> Роль </div>
-							{tableSettings.isShowStatus && <div> Статус </div>}
+							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 						</div>
 					</div>
 					<div> Возможность добавления </div>
 				</div>
-				<div className="route-table__body">
-					{
-						routeData.map(rowData => <RouteTableRow setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
-					}
-					{
-						isEditMode &&
-						<div className='route-table__add-button-wrapper'>
-							<AddItemButton handleAddClick={handleAddRouteRow} />
-						</div>
-					}
-				</div>
+				{!isLoading
+					? <div className="route-table__body">
+						{
+							routeData.map(rowData => !rowData.deleted && <RouteTableRow tableSettings={tableSettings} setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings && tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
+						}
+						{
+							isEditMode && tableSettings && tableSettings.canAddStep &&
+							<div className='route-table__add-button-wrapper'>
+								<AddItemButton handleAddClick={handleAddRouteRow} />
+							</div>
+						}
+					</div>
+					: <div className="route-table__body">
+						<Loader />
+					</div>
+				}
 			</div>
 			{
-				!tableSettings.isReadOnly &&
+				tableSettings && !tableSettings.isReadOnly &&
 				<div className='route-table-actions'>
 					{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
 					{isEditMode && <button className='route-table-button' onClick={handleSaveClick}>Сохранить</button>}

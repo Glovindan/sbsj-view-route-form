@@ -1,19 +1,16 @@
-@import url('./AddItemButton/addItemButton.scss');
-@import url('./RouteTableRow/routeTableRow.scss');
-
-.route-table-wrapper {
+.additional-approvers-wrapper {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
 }
 
-.route-table-actions {
+.additional-approvers-actions {
 	display: flex;
 	flex-direction: row;
 	gap: 16px;
 }
 
-.route-table-button {
+.additional-approvers-button {
 	background: #108e55;
 	border: 2px solid transparent;
 	border-radius: 2px;
@@ -39,8 +36,8 @@
 	}
 }
 
-// Настройки отображения таблицы маршрута
-.route-table {
+// Настройки отображения таблицы допсогласующих
+.additional-approvers {
 	&__add-button-wrapper {
 		border-bottom: var(--table-border-settings);
 	}
@@ -76,7 +73,7 @@
 		}
 
 		display: grid;
-		grid-template-columns: 0.5fr 1fr 1fr 2fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		border-bottom: var(--table-border-settings);
 		border-width: 2px;
 
@@ -117,10 +114,10 @@
 	}
 }
 
-.route-table-body {
+.additional-approvers-body {
 	&__row {
 		display: grid;
-		grid-template-columns: 0.5fr 1fr 1fr 2fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 
 		&:nth-child(odd) {
 			background: #f0f0f0;
@@ -131,36 +128,6 @@
 
 		& > div:nth-child(4) {
 			padding: 0;
-		}
-	}
-}
-
-.sub-table {
-	&__body {
-		display: grid;
-		grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
-	}
-	&__row {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-		border-width: 1px;
-		& > div {
-			border-width: 1px;
-		}
-
-		&:nth-child(odd) {
-			background: #f8f8f8;
-		}
-		&:nth-child(even) {
-			background: #f0f0f0;
-		}
-
-		&:last-child {
-			border-bottom: none;
-		}
-
-		&_single {
-			grid-template-columns: 1fr;
 		}
 	}
 }

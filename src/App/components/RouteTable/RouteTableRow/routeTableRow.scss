@@ -16,3 +16,31 @@
 		box-shadow: none !important;
 	}
 }
+
+// Колонка с действиями
+.column-action {
+	display: flex;
+	flex-direction: row;
+	height: fit-content;
+	justify-content: space-between;
+	&__button {
+		display: flex;
+		align-items: center;
+		width: fit-content;
+		cursor: pointer;
+		& svg {
+			color: transparent !important;
+		}
+		& path {
+			stroke: #108e55;
+		}
+
+		&:hover path {
+			stroke: rgb(79, 79, 79);
+		}
+
+		&:active path {
+			opacity: 0.6;
+		}
+	}
+}
