@@ -92,6 +92,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	return (
 		<div className='route-table-wrapper'>
+			<div className='table-title'>Маршрут согласования</div>
 			<div className="my-table route-table">
 				<div className="route-table__header route-table__row">
 					<div> Шаг </div>
@@ -100,6 +101,8 @@ export default function RouteTable({ }: RouteTableRowProps) {
 					<div className="sub-table__body">
 						<div className='route-table__header route-table__row sub-table__row'>
 							<div> Роль </div>
+							<div> Должность </div>
+							<div> Подразделение </div>
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 						</div>
 					</div>

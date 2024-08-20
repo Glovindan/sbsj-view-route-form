@@ -61,6 +61,13 @@ export class RoleItem {
 	/** Название Сотрудника */
 	employeeName?: string
 
+	/** Название должности Сотрудника */
+	employeeNamePosition?: string
+	/** Название подразделения Сотрудника */
+	employeeDepartmentName?: string
+	/** Идентификатор подразделения Сотрудника */
+	employeeDepartmentId?: string
+
 	/** Идентификатор Группы */
 	groupId?: string
 	/** Название Группы */

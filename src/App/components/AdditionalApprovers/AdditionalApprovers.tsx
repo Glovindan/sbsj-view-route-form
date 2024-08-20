@@ -38,10 +38,11 @@ export default function AdditionalApprovers({ }: AdditionalApproversProps) {
 			{
 				tableSettings && tableSettings.showAdditionalApprovers &&
 				<div className='additional-approvers-wrapper'>
+					<div className='table-title'>Дополнительные согласующие</div>
 					<div className="my-table additional-approvers">
 						<div className="additional-approvers__header additional-approvers__row">
-							<div> Кто привлек </div>
-							<div> Кого привлекли </div>
+							<div> Согласующий </div>
+							<div> Привлеченный к согласованию </div>
 							<div> Статус </div>
 						</div>
 						{!isLoading

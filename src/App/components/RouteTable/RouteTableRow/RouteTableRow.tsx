@@ -1,8 +1,8 @@
-import React, { SyntheticEvent, useContext } from 'react'
-import { AddRoleCallback, RoleType, RouteItem, TableSettings } from '../../../shared/types'
-import { onClickGroup, onClickUser, redirectSPA } from '../../../shared/utils/utils';
+import React from 'react';
+import { AddRoleCallback, RouteItem, TableSettings } from '../../../shared/types';
 import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
+import RoleRow from '../RoleRow/RoleRow';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -33,7 +33,8 @@ enum BooleanStr {
 }
 
 /** Строка таблицы Маршрута согласования */
-export default function RouteTableRow({ data, addRoleCallback, setRowData, tableSettings, isEditMode = false, isShowStatus = false }: RouteTableRowProps) {
+export default function RouteTableRow(props: RouteTableRowProps) {
+	const { data, addRoleCallback, setRowData, tableSettings, isEditMode = false } = props;
 	/** Нажатие на кнопку добавления роли */
 	const onClickAddRole = () => {
 		Scripts.toggleAddRole(addRoleCallback)
@@ -47,7 +48,8 @@ export default function RouteTableRow({ data, addRoleCallback, setRowData, table
 
 	/** Изменение срока согласования */
 	const onChangeTerm = (ev: any) => {
-		data.term = Number(ev.target.value);
+		const num = Number(ev.target.value);
+		data.term = num > 0 ? num : 0;
 		setRowData(data)
 	}
 
@@ -70,19 +72,7 @@ export default function RouteTableRow({ data, addRoleCallback, setRowData, table
 		</svg>
 	)
 
-	/** Иконка вверх */
-	const upIcon = (
-		<svg xmlns="http://www.w3.org/2000/svg" width="23px" height="23px" viewBox="0 0 24 24" fill="none">
-			<path xmlns="http://www.w3.org/2000/svg" d="M17 14L12 9L7 14" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-		</svg>
-	)
 
-	/** Иконка вниз */
-	const downIcon = (
-		<svg xmlns="http://www.w3.org/2000/svg" width="23px" height="23px" viewBox="0 0 24 24" fill="none">
-			<path xmlns="http://www.w3.org/2000/svg" d="M7 10L12 15L17 10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-		</svg>
-	)
 
 	return (
 		<div className="route-table__row route-table-body__row">
@@ -121,41 +111,7 @@ export default function RouteTableRow({ data, addRoleCallback, setRowData, table
 			<div className="sub-table__body">
 				{
 					data.roles.map(role =>
-						<div className={`route-table__row sub-table__row ${isShowStatus ? '' : 'sub-table__row_single'}`}>
-							<div className='column-action'>
-								<div>
-									{/* Если указана группа то показать группу, иначе пользователя */}
-									{
-										role.groupId != undefined
-											?
-											<span
-												className={role.roleType == RoleType.group ? "route-table__link" : ""}
-												onClick={role.roleType == RoleType.group ? () => onClickGroup(role.groupId!) : () => { }}
-											>
-												{role.groupName}
-											</span>
-											: (role.employeeId && <span className="route-table__user-link" onClick={() => onClickUser(role.employeeId!)}>{role.employeeName}</span>)
-									}
-									{/* Если указана группа и найден согласующий пользователь */}
-									{
-										role.groupId != undefined && role.employeeId != undefined &&
-										<span>&nbsp;<span className="route-table__user-link" onClick={() => onClickUser(role.employeeId!)}>({role.employeeName})</span></span>
-									}
-								</div>
-								{/* TODO */}
-								{/* <div className="column-action__actions">
-									<div className="column-action__button">{removeIcon}</div>
-									<div className="column-action__button">{upIcon}</div>
-									<div className="column-action__button">{downIcon}</div>
-								</div> */}
-							</div>
-							{
-								isShowStatus &&
-								<div>
-									{role.status}
-								</div>
-							}
-						</div>
+						<RoleRow {...props} role={role} />
 					)
 				}
 				{isEditMode && data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}

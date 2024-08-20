@@ -13,6 +13,11 @@ export const onClickUser = (employeeId: string) => {
 	redirectSPA(`.(p:item/edms_directoties/employee/${employeeId})`)
 }
 
+/** Открытие подразделения */
+export const onClickDepartment = (departmentId: string) => {
+	redirectSPA(`.(p:item/edms_directoties/divisions/${departmentId})`)
+}
+
 /** Открытие группы */
 export const onClickGroup = (groupId: string) => {
 	redirectSPA(`(p:group/${groupId})`)

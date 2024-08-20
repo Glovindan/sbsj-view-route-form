@@ -21,6 +21,18 @@
 	}
 }
 
+.table-title {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 15px;
+	line-height: 15px;
+	border-bottom: var(--table-border-settings);
+	padding: 8px 3px;
+
+	color: #108e55;
+}
+
 .tables-wrapper {
 	display: flex;
 	flex-direction: column;

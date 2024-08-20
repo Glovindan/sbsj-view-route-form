@@ -33,6 +33,10 @@ async function getRouteData(): Promise<RouteItem[]> {
 		roleItem.groupId = 'test_id'
 		roleItem.groupName = '123'
 
+		roleItem.employeeDepartmentName = 'Test Dep'
+		roleItem.employeeDepartmentId = 'ebae2-dab21bb12f'
+		roleItem.employeeNamePosition = 'Test Position'
+
 		const roles = [roleItem, roleItem, roleItem]
 		rowItem.roles = roles
 
@@ -57,6 +61,10 @@ async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
 	roleItem.groupId = 'test_id'
 	roleItem.groupName = '123'
 
+	roleItem.employeeDepartmentName = 'Test Dep'
+	roleItem.employeeDepartmentId = 'ebae2-dab21bb12f'
+	roleItem.employeeNamePosition = 'Test Position'
+
 	return addRoleCallback([roleItem])
 }
 
@@ -65,7 +73,7 @@ async function getSettings(): Promise<TableSettings> {
 	const settings = new TableSettings()
 
 	settings.isReadOnly = false
-	settings.isShowStatus = false
+	settings.isShowStatus = true
 
 	return settings
 }
