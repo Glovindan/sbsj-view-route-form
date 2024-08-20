@@ -66,6 +66,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 		const newRow = new RouteItem();
 		newRow.step = lastStep + 1;
+		newRow.term = 8;
 
 		routeData.push(newRow)
 

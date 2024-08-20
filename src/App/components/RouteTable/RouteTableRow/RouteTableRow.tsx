@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AddRoleCallback, RouteItem, TableSettings } from '../../../shared/types';
 import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
 import RoleRow from '../RoleRow/RoleRow';
+import { DefaultTermByType } from '../../../shared/utils/constants';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -43,11 +44,18 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 	/** Изменение типа согласования */
 	const onChangeType = (ev: any) => {
 		data.isParallel = ev.target.value == '1';
+		if (!termChanged) {
+			data.term = data.isParallel ? DefaultTermByType.parallel : DefaultTermByType.sequential
+		}
+
 		setRowData(data)
 	}
 
+	/** Флажок ручного изменения срока согласования */
+	const [termChanged, setTermChanged] = useState<boolean>(data.isParallel && data.term != DefaultTermByType.parallel || !data.isParallel && data.term != DefaultTermByType.sequential);
 	/** Изменение срока согласования */
 	const onChangeTerm = (ev: any) => {
+		setTermChanged(true)
 		const num = Number(ev.target.value);
 		data.term = num > 0 ? num : 0;
 		setRowData(data)

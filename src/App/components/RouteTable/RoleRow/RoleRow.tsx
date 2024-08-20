@@ -62,7 +62,7 @@ export default function RoleRow({ data, setRowData, role, isShowStatus = false }
 	)
 
 	return (
-		<div className={`route-table__row sub-table__row ${isShowStatus ? '' : 'sub-table__row_single'}`}>
+		<div className={`route-table__row sub-table__row`}>
 			{/* Колонка с действиями */}
 			<div className='column-action'>
 				{/* Колонка с именем */}
