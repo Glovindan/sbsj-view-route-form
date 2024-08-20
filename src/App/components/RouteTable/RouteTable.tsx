@@ -4,6 +4,7 @@ import { AddRoleCallback, RoleItem, RouteItem, TableSettings } from '../../share
 import RouteTableRow from './RouteTableRow/RouteTableRow';
 import AddItemButton from './AddItemButton/AddItemButton';
 import Loader from '../Loader/Loader';
+import { DefaultTermByType } from '../../shared/utils/constants';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -50,10 +51,36 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		}
 	}
 
+	/** Получение последнего неудаленного элемента */
+	const getLastNotDeletedElement = (stepNumber: number) => {
+		// От шага к началу
+		for (let index = stepNumber; index >= 0; index--) {
+			const rowData = routeData[index];
+			if (!rowData || rowData.deleted) continue;
+			return rowData
+		}
+
+		// От шага к концу
+		for (let index = stepNumber; index < routeData.length; index++) {
+			const rowData = routeData[index];
+			if (!rowData || rowData.deleted) continue;
+			return rowData
+		}
+	}
+
 	/** Создание функции Добавить роль */
 	const editRowFactory = (row: RouteItem) => {
 		return (newRowItem: RouteItem) => {
 			Object.assign(row, newRowItem);
+
+			// Обновление типов при удалении
+			if (newRowItem.deleted) {
+				const lastNotDeletedElement = getLastNotDeletedElement(newRowItem.step)
+				if (lastNotDeletedElement) updateStepTypes(lastNotDeletedElement.isParallel, lastNotDeletedElement.step)
+				// Обновление типов при других изменениях
+			} else {
+				updateStepTypes(newRowItem.isParallel, newRowItem.step)
+			}
 
 			setRouteData([...routeData])
 		}
@@ -62,15 +89,50 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	/** Обработчик добавления строки в маршрут */
 	const handleAddRouteRow = () => {
 		const routeDataFiltered = routeData.filter(rd => !rd.deleted);
-		const lastStep = routeDataFiltered[routeDataFiltered.length - 1].step;
+		const lastRow = routeDataFiltered.length ? routeDataFiltered[routeDataFiltered.length - 1] : undefined;
+		// Номер последнего шага
+		const lastStep = lastRow?.step ?? 0;
+		// Является тип согласования последнего шага параллельным
+		const isLastParallel = lastRow?.isParallel ?? false;
 
 		const newRow = new RouteItem();
 		newRow.step = lastStep + 1;
-		newRow.term = 8;
+		newRow.isParallel = !isLastParallel;
+		newRow.term = newRow.isParallel ? DefaultTermByType.parallel : DefaultTermByType.sequential;
+		newRow.canAddUser = true;
 
 		routeData.push(newRow)
 
 		setRouteData([...routeData])
+	}
+
+	/** Обновление типов шагов при изменении типа в одном шаге */
+	const updateStepTypes = (isParallel: boolean, stepNumber: number) => {
+		const newRouteData = routeData;
+		// Индекс измененного шага
+		const changedStepIndex = newRouteData.findIndex(rdf => rdf.step === stepNumber);
+
+		let isParallelBuffer = !isParallel;
+		// От шага к началу
+		for (let index = changedStepIndex - 1; index >= 0; index--) {
+			const rowData = newRouteData[index];
+			if (!rowData || rowData.deleted) continue;
+
+			rowData.isParallel = isParallelBuffer;
+			isParallelBuffer = !isParallelBuffer;
+		}
+
+		isParallelBuffer = !isParallel;
+		// От шага к концу
+		for (let index = changedStepIndex + 1; index < newRouteData.length; index++) {
+			const rowData = newRouteData[index];
+			if (!rowData || rowData.deleted) continue;
+
+			rowData.isParallel = isParallelBuffer;
+			isParallelBuffer = !isParallelBuffer;
+		}
+
+		setRouteData([...newRouteData])
 	}
 
 	/** Обработка нажатия на кнопку редактирования */

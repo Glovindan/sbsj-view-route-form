@@ -44,6 +44,7 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 	/** Изменение типа согласования */
 	const onChangeType = (ev: any) => {
 		data.isParallel = ev.target.value == '1';
+		// updateStepTypes(data.isParallel, data.step)
 		if (!termChanged) {
 			data.term = data.isParallel ? DefaultTermByType.parallel : DefaultTermByType.sequential
 		}
