@@ -4,11 +4,14 @@ import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
 import RoleRow from '../RoleRow/RoleRow';
 import { DefaultTermByType } from '../../../shared/utils/constants';
+import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
 	/** Данные строки */
 	data: RouteItem;
+	/** Перенос шага */
+	moveRow: (stepNumber: number, isUp: boolean) => void
 	/** Добавить роль */
 	addRoleCallback: AddRoleCallback
 	/** Изменить значения строки маршрута */
@@ -35,7 +38,7 @@ enum BooleanStr {
 
 /** Строка таблицы Маршрута согласования */
 export default function RouteTableRow(props: RouteTableRowProps) {
-	const { data, addRoleCallback, setRowData, tableSettings, isEditMode = false } = props;
+	const { data, addRoleCallback, setRowData, tableSettings, isEditMode = false, moveRow } = props;
 	/** Нажатие на кнопку добавления роли */
 	const onClickAddRole = () => {
 		Scripts.toggleAddRole(addRoleCallback)
@@ -74,26 +77,27 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(data)
 	}
 
-	/** Иконка удаления */
-	const removeIcon = (
-		<svg xmlns="http://www.w3.org/2000/svg" width="23px" height="23px" viewBox="0 0 24 24" fill="none">
-			<path xmlns="http://www.w3.org/2000/svg" d="M14 9.5C14 9.5 14.5 10.5 14.5 12.5C14.5 14.5 14 15.5 14 15.5M10 9.5C10 9.5 9.5 10.5 9.5 12.5C9.5 14.5 10 15.5 10 15.5M5.99999 6C5.99999 11.8587 4.63107 20 12 20C19.3689 20 18 11.8587 18 6M4 6H20M15 6V5C15 3.22496 13.3627 3 12 3C10.6373 3 9 3.22496 9 5V6" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-		</svg>
-	)
+	/** Перемещение строки вверх */
+	const moveRowUp = () => {
+		moveRow(data.step, true)
+	}
 
-
+	/** Перемещение строки вниз */
+	const moveRowDown = () => {
+		moveRow(data.step, false)
+	}
 
 	return (
 		<div className="route-table__row route-table-body__row">
 			<div className="column-action">
-				<div>{data.step} </div>
+				<div>{data.step}</div>
 				{
 					isEditMode &&
 					<div className="column-action__actions">
 						{tableSettings && tableSettings.canDeleteStep && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
 						{/* TODO */}
-						{/* <div className="column-action__button">{upIcon}</div>
-						<div className="column-action__button">{downIcon}</div> */}
+						<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
+						<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
 					</div>
 				}
 			</div>
@@ -119,8 +123,8 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 			{/* Роли */}
 			<div className="sub-table__body">
 				{
-					data.roles.map(role =>
-						<RoleRow {...props} role={role} />
+					data.roles.map((role, index) =>
+						<RoleRow {...props} roleIndex={index} role={role} />
 					)
 				}
 				{isEditMode && data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}

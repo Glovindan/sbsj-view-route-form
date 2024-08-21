@@ -19,6 +19,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const [tableSettings, setTableSettings] = useState<TableSettings>()
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isSaving, setIsSaving] = useState<boolean>(false)
 
 	React.useLayoutEffect(() => {
 		Scripts.getSettings().then((tableSettings) => setTableSettings(tableSettings))
@@ -142,7 +143,11 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	/** Обработка нажатия на кнопку сохранения */
 	const handleSaveClick = () => {
-		Scripts.saveRouteData(routeData).then(() => getRouteData());
+		setIsSaving(true)
+		Scripts.saveRouteData(routeData).then(() => {
+			setIsSaving(false)
+			getRouteData()
+		});
 		setIsEditMode(false)
 	}
 
@@ -151,6 +156,53 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		setRouteData(initialRouteData)
 		getRouteData()
 		setIsEditMode(false)
+	}
+
+	/** Перемещение строки вверх */
+	const moveRow = (stepNumber: number, isUp: boolean) => {
+		const newRouteData = routeData;
+		// Индекс шага
+		const stepIndex = newRouteData.findIndex(rdf => rdf.step === stepNumber && !rdf.deleted);
+		if (stepIndex == -1) return;
+
+		const step = newRouteData[stepIndex];
+
+		let stepBefore: RouteItem | undefined;
+		let stepBeforeIndex: number = -1;
+
+		if (isUp) {
+			// Найти первый элемент перед текущим
+			for (let index = stepIndex - 1; index >= 0; index--) {
+				const rowData = newRouteData[index];
+				if (!rowData || rowData.deleted) continue;
+
+				stepBefore = rowData;
+				stepBeforeIndex = index;
+				break;
+			}
+		} else {
+			// Найти первый элемент после текущего текущим
+			for (let index = stepIndex + 1; index < newRouteData.length; index++) {
+				const rowData = newRouteData[index];
+				if (!rowData || rowData.deleted) continue;
+
+				stepBefore = rowData;
+				stepBeforeIndex = index;
+				break;
+			}
+		}
+
+		if (stepBeforeIndex == -1 || !stepBefore) return;
+
+		// Поменять типы согласования
+		const typeBuff = step.isParallel;
+		step.isParallel = stepBefore.isParallel;
+		stepBefore.isParallel = typeBuff;
+
+		// Поменять элементы местами в массиве
+		[newRouteData[stepBeforeIndex], newRouteData[stepIndex]] = [newRouteData[stepIndex], newRouteData[stepBeforeIndex]];
+
+		setRouteData([...newRouteData])
 	}
 
 	return (
@@ -174,7 +226,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 				{!isLoading
 					? <div className="route-table__body">
 						{
-							routeData.map(rowData => !rowData.deleted && <RouteTableRow tableSettings={tableSettings} setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings && tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
+							routeData.map(rowData => !rowData.deleted && <RouteTableRow moveRow={moveRow} tableSettings={tableSettings} setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings && tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
 						}
 						{
 							isEditMode && tableSettings && tableSettings.canAddStep &&
@@ -190,11 +242,16 @@ export default function RouteTable({ }: RouteTableRowProps) {
 			</div>
 			{
 				tableSettings && !tableSettings.isReadOnly &&
-				<div className='route-table-actions'>
-					{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
-					{isEditMode && <button className='route-table-button' onClick={handleSaveClick}>Сохранить</button>}
-					{isEditMode && <button className='route-table-button route-table-button_outline' onClick={handleCancelClick}>Отменить</button>}
-				</div>
+				(!isSaving
+					? <div className='route-table-actions'>
+						{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
+						{isEditMode && <button className='route-table-button' onClick={handleSaveClick}>Сохранить</button>}
+						{isEditMode && <button className='route-table-button route-table-button_outline' onClick={handleCancelClick}>Отменить</button>}
+					</div>
+					: <div className='route-table-actions'>
+						<Loader />
+					</div>
+				)
 			}
 		</div>
 	)
