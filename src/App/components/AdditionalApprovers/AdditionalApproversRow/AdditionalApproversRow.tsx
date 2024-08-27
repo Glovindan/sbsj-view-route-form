@@ -18,6 +18,7 @@ export default function AdditionalApproversRow({ data, tableSettings }: Addition
 			<div>{data.inviter.employeeId && <span className="additional-approvers__user-link" onClick={() => onClickUser(data.inviter.employeeId!)}>{data.inviter.employeeName}</span>}</div>
 			<div>{data.approver.employeeId && <span className="additional-approvers__user-link" onClick={() => onClickUser(data.approver.employeeId!)}>{data.approver.employeeName}</span>}</div>
 			<div>{data.status}</div>
+			<div>{data.comment}</div>
 		</div >
 	)
 }

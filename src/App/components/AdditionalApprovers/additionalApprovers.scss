@@ -69,11 +69,11 @@
 		}
 
 		& > div:nth-child(4) {
-			padding: 0;
+			padding: 20px 8px;
 		}
 
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 		border-bottom: var(--table-border-settings);
 		border-width: 2px;
 
@@ -117,7 +117,7 @@
 .additional-approvers-body {
 	&__row {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 
 		&:nth-child(odd) {
 			background: #f0f0f0;
@@ -127,7 +127,7 @@
 		}
 
 		& > div:nth-child(4) {
-			padding: 0;
+			padding: 20px 8px;
 		}
 	}
 }

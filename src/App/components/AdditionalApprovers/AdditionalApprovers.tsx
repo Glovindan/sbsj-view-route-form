@@ -44,6 +44,7 @@ export default function AdditionalApprovers({ }: AdditionalApproversProps) {
 							<div> Согласующий </div>
 							<div> Привлеченный к согласованию </div>
 							<div> Статус </div>
+							<div> Комментарий </div>
 						</div>
 						{!isLoading
 							? <div className="additional-approvers__body">

@@ -74,6 +74,7 @@ async function getSettings(): Promise<TableSettings> {
 
 	settings.isReadOnly = false
 	settings.isShowStatus = true
+	settings.canEditRoute = true
 
 	return settings
 }
@@ -108,6 +109,7 @@ async function getAdditionalApproversData(): Promise<AdditionalApproverItem[]> {
 		rowItem.inviter = inviter
 		rowItem.approver = approver
 		rowItem.status = 'Соглы'
+		rowItem.comment = 'Test'
 
 		additionalApproversItems.push(rowItem)
 	}

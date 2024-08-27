@@ -31,11 +31,14 @@ export class AdditionalApproverItem {
 	approver: RoleItem
 	/** Статус */
 	status: string
+	/** Статус */
+	comment: string
 
 	constructor() {
 		this.inviter = new RoleItem()
 		this.approver = new RoleItem()
 		this.status = ''
+		this.comment = ''
 	}
 }
 
@@ -97,6 +100,8 @@ export class TableSettings {
 	canDeleteRole: boolean
 	/** Возможность добавления Роли */
 	canAddRole: boolean
+	/** Возможность Изменения маршрута */
+	canEditRoute: boolean
 	/** Показывать дополнительных согласующих */
 	showAdditionalApprovers: boolean
 
@@ -108,6 +113,7 @@ export class TableSettings {
 		this.canAddStep = true
 		this.canDeleteRole = true
 		this.canAddRole = true
+		this.canEditRoute = false
 
 		this.showAdditionalApprovers = true
 	}

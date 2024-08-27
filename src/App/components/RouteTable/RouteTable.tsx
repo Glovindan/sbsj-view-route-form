@@ -241,7 +241,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 				}
 			</div>
 			{
-				tableSettings && !tableSettings.isReadOnly &&
+				tableSettings && tableSettings.canEditRoute && !tableSettings.isReadOnly &&
 				(!isSaving
 					? <div className='route-table-actions'>
 						{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
