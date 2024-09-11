@@ -27,6 +27,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 		const roleItem = new RoleItem()
 		roleItem.roleType = RoleType.group
+		roleItem.deadline = new Date()
 		roleItem.employeeId = 'test_id'
 		roleItem.employeeName = 'Test T.'
 		roleItem.status = 'Согласовано'

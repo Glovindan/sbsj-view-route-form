@@ -22,6 +22,10 @@ interface RouteTableRowProps {
 	isEditMode?: boolean
 	/** Показывать статус */
 	isShowStatus?: boolean
+	/** Настройки ширины столбцов */
+	gridTemplateColumns?: string
+	/** Индекс строки */
+	index: number
 }
 
 /** Тип согласования */
@@ -38,7 +42,7 @@ enum BooleanStr {
 
 /** Строка таблицы Маршрута согласования */
 export default function RouteTableRow(props: RouteTableRowProps) {
-	const { data, addRoleCallback, setRowData, tableSettings, isEditMode = false, moveRow } = props;
+	const { index, data, addRoleCallback, setRowData, tableSettings, isEditMode = false, moveRow, gridTemplateColumns } = props;
 	/** Нажатие на кнопку добавления роли */
 	const onClickAddRole = () => {
 		Scripts.toggleAddRole(addRoleCallback)
@@ -87,59 +91,76 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		moveRow(data.step, false)
 	}
 
-	return (
-		<div className="route-table__row route-table-body__row">
+	/** Разметка подтаблицы ролей */
+	const rolesLayout = (
+		data.roles.map((role, index) =>
+			<RoleRow {...props} roleIndex={index} role={role} />
+		)
+	)
+
+	/** Разметка режима редактирования */
+	const editLayout = (
+		<>
 			<div className="column-action">
-				<div>{data.step}</div>
-				{
-					isEditMode &&
-					<div className="column-action__actions">
-						{tableSettings && tableSettings.canDeleteStep && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
-						{/* TODO */}
-						<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
-						<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
-					</div>
-				}
+				<div>{index + 1}</div>
+				<div className="column-action__actions">
+					{tableSettings && tableSettings.canDeleteStep && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
+					<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
+					<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
+				</div>
 			</div>
 			{/* Тип согласования */}
-			{
-				isEditMode
-					? (<div>
-						<select className='route-input-field' name="" id="" onChange={onChangeType} value={data.isParallel ? '1' : '0'}>
-							<option value="0">{ApprovalType.sequential}</option>
-							<option value="1">{ApprovalType.parallel}</option>
-						</select>
-					</div>)
-					: (<div> {data.isParallel ? ApprovalType.parallel : ApprovalType.sequential} </div>)
-			}
+			<div>
+				<select className='route-input-field' name="" id="" onChange={onChangeType} value={data.isParallel ? '1' : '0'}>
+					<option value="0">{ApprovalType.sequential}</option>
+					<option value="1">{ApprovalType.parallel}</option>
+				</select>
+			</div>
 			{/* Срок согласования */}
-			{
-				isEditMode
-					? (<div>
-						<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />
-					</div>)
-					: (<div> {data.term} </div>)
-			}
+			<div>
+				<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />
+			</div>
 			{/* Роли */}
 			<div className="sub-table__body">
-				{
-					data.roles.map((role, index) =>
-						<RoleRow {...props} roleIndex={index} role={role} />
-					)
-				}
-				{isEditMode && data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}
+				{rolesLayout}
+				{data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}
 			</div>
 			{/* Возможность добавления */}
 			{
-				isEditMode
-					? (<div>
-						<select className='route-input-field' name="canAddUser" onChange={onChangeCanAddUser} value={data.canAddUser ? '1' : '0'}>
-							<option value="1">Да</option>
-							<option value="0">Нет</option>
-						</select>
-					</div>)
-					: (<div> {data.canAddUser && tableSettings && tableSettings.canAddRole ? BooleanStr.true : BooleanStr.false} </div>)
+				tableSettings && tableSettings.isShowAddAbility &&
+				<div>
+					<select className='route-input-field' name="canAddUser" onChange={onChangeCanAddUser} value={data.canAddUser ? '1' : '0'}>
+						<option value="1">Да</option>
+						<option value="0">Нет</option>
+					</select>
+				</div>
 			}
-		</div >
+		</>
+	)
+
+	/** Разметка режима просмотра */
+	const viewLayout = (
+		<>
+			<div className="column-action">
+				<div>{index + 1}</div>
+			</div>
+			{/* Тип согласования */}
+			<div> {data.isParallel ? ApprovalType.parallel : ApprovalType.sequential} </div>
+			{/* Срок согласования */}
+			<div> {data.term} </div>
+			{/* Роли */}
+			<div className="sub-table__body"> {rolesLayout} </div>
+			{/* Возможность добавления */}
+			{
+				tableSettings && tableSettings.isShowAddAbility &&
+				<div> {(data.canAddUser && tableSettings && tableSettings.canAddRole) ? BooleanStr.true : BooleanStr.false} </div>
+			}
+		</>
+	)
+
+	return (
+		<div className="route-table__row route-table-body__row" style={{ gridTemplateColumns: gridTemplateColumns }}>
+			{isEditMode ? editLayout : viewLayout}
+		</div>
 	)
 }

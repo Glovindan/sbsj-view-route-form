@@ -75,6 +75,8 @@ export class RoleItem {
 	groupId?: string
 	/** Название Группы */
 	groupName?: string
+	/** Срок согласования */
+	deadline?: Date
 
 	constructor() {
 		this.roleType = RoleType.user
@@ -89,6 +91,8 @@ export type AddRoleCallback = (roleItems: RoleItem[]) => void
 export class TableSettings {
 	/** Показывать статус */
 	isShowStatus: boolean
+	/** Показывать столбец Возможность добавления */
+	isShowAddAbility: boolean
 	/** Только для чтения */
 	isReadOnly: boolean
 
@@ -104,10 +108,13 @@ export class TableSettings {
 	canEditRoute: boolean
 	/** Показывать дополнительных согласующих */
 	showAdditionalApprovers: boolean
+	/** Показывать срок согласования по задаче */
+	isShowDeadline: boolean
 
 	constructor() {
 		this.isReadOnly = false
 		this.isShowStatus = false
+		this.isShowAddAbility = true
 
 		this.canDeleteStep = true
 		this.canAddStep = true
@@ -116,5 +123,6 @@ export class TableSettings {
 		this.canEditRoute = false
 
 		this.showAdditionalApprovers = true
+		this.isShowDeadline = true
 	}
 }

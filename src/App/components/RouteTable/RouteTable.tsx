@@ -45,7 +45,13 @@ export default function RouteTable({ }: RouteTableRowProps) {
 			const row = routeData.find(routeRow => routeRow.step === step);
 
 			if (row) {
-				row.roles = row.roles.concat(roleItems);
+				// Фильтр дублей в одном шагу
+				for (const roleItem of roleItems) {
+					const findRolesByEmployeeId = row.roles.find(r => r.employeeId && roleItem.employeeId && (r.employeeId === roleItem.employeeId))
+					const findRolesByGroupId = row.roles.find(r => r.groupId && roleItem.groupId && (r.groupId === roleItem.groupId))
+					// Если не найдена группа или юзер с таким id то добавить
+					if (!findRolesByEmployeeId && !findRolesByGroupId) row.roles = row.roles.concat(roleItems);
+				}
 			}
 
 			setRouteData([...routeData])
@@ -91,8 +97,9 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const handleAddRouteRow = () => {
 		const routeDataFiltered = routeData.filter(rd => !rd.deleted);
 		const lastRow = routeDataFiltered.length ? routeDataFiltered[routeDataFiltered.length - 1] : undefined;
+
 		// Номер последнего шага
-		const lastStep = lastRow?.step ?? 0;
+		const lastStep = Math.max(...routeData.map(rd => rd.step));
 		// Является тип согласования последнего шага параллельным
 		const isLastParallel = lastRow?.isParallel ?? false;
 
@@ -205,11 +212,14 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		setRouteData([...newRouteData])
 	}
 
+	/** Настройки ширины столбцов */
+	const gridTemplateColumns: string = `55px 1.2fr 1fr 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""}`
+
 	return (
 		<div className='route-table-wrapper'>
 			<div className='table-title'>Маршрут согласования</div>
 			<div className="my-table route-table">
-				<div className="route-table__header route-table__row">
+				<div className="route-table__header route-table__row" style={{ gridTemplateColumns: gridTemplateColumns }}>
 					<div> Шаг </div>
 					<div> Тип согласования </div>
 					<div> Срок согласования </div>
@@ -218,15 +228,28 @@ export default function RouteTable({ }: RouteTableRowProps) {
 							<div> Роль </div>
 							<div> Должность </div>
 							<div> Подразделение </div>
+							{tableSettings && tableSettings.isShowDeadline && <div> Срок согласования </div>}
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 						</div>
 					</div>
-					<div> Возможность добавления </div>
+					{tableSettings && tableSettings.isShowAddAbility && <div> Возможность добавления </div>}
 				</div>
 				{!isLoading
 					? <div className="route-table__body">
 						{
-							routeData.map(rowData => !rowData.deleted && <RouteTableRow moveRow={moveRow} tableSettings={tableSettings} setRowData={editRowFactory(rowData)} isEditMode={isEditMode} isShowStatus={tableSettings && tableSettings.isShowStatus} data={rowData} addRoleCallback={addRoleCallbackFactory(rowData.step)} />)
+							routeData.filter(rowData => !rowData.deleted).map((rowData, index) =>
+								<RouteTableRow
+									gridTemplateColumns={gridTemplateColumns}
+									moveRow={moveRow}
+									tableSettings={tableSettings}
+									setRowData={editRowFactory(rowData)}
+									isEditMode={isEditMode}
+									isShowStatus={tableSettings && tableSettings.isShowStatus}
+									data={rowData}
+									index={index}
+									addRoleCallback={addRoleCallbackFactory(rowData.step)}
+								/>
+							)
 						}
 						{
 							isEditMode && tableSettings && tableSettings.canAddStep &&

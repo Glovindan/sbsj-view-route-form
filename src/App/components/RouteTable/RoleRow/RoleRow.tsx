@@ -24,7 +24,7 @@ interface RoleRowProps {
 }
 
 /** Строка подтаблицы с ролями */
-export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode }: RoleRowProps) {
+export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode, tableSettings }: RoleRowProps) {
 	/** Изменение срока согласования */
 	const onChangeTerm = (ev: any) => {
 		data.term = Number(ev.target.value);
@@ -90,6 +90,13 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 					{role.employeeDepartmentName}
 				</span>
 			</div>
+			{/* Срок согласования */}
+			{
+				tableSettings && tableSettings.isShowDeadline &&
+				<div>
+					{role.deadline?.toDateString() ?? ""}
+				</div>
+			}
 			{/* Колонка статуса */}
 			{
 				isShowStatus &&
