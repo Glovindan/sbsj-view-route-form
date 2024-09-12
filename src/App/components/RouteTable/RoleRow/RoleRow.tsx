@@ -1,7 +1,8 @@
 import React from 'react';
 import { AddRoleCallback, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
 import { onClickDepartment, onClickGroup, onClickUser } from '../../../shared/utils/utils';
-import { removeIcon } from '../../../shared/utils/icons';
+import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
+import moment from 'moment';
 
 /** Пропсы компонента */
 interface RoleRowProps {
@@ -21,10 +22,12 @@ interface RoleRowProps {
 	role: RoleItem
 	/** Индекс */
 	roleIndex: number
+	/** Перенос шага */
+	moveRow: (index: number, isUp: boolean) => void
 }
 
 /** Строка подтаблицы с ролями */
-export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode, tableSettings }: RoleRowProps) {
+export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode, tableSettings, moveRow }: RoleRowProps) {
 	/** Изменение срока согласования */
 	const onChangeTerm = (ev: any) => {
 		data.term = Number(ev.target.value);
@@ -44,6 +47,16 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 			return index != roleIndex;
 		});
 		setRowData(data)
+	}
+
+	/** Перемещение строки вверх */
+	const moveRowUp = () => {
+		moveRow(roleIndex, true)
+	}
+
+	/** Перемещение строки вниз */
+	const moveRowDown = () => {
+		moveRow(roleIndex, false)
 	}
 
 	return (
@@ -75,8 +88,8 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 					isEditMode &&
 					<div className="column-action__actions">
 						<div onClick={deleteRow} className="column-action__button">{removeIcon}</div>
-						{/* <div className="column-action__button">{upIcon}</div>
-						<div className="column-action__button">{downIcon}</div> */}
+						<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
+						<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
 					</div>
 				}
 			</div>
@@ -94,7 +107,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 			{
 				tableSettings && tableSettings.isShowDeadline &&
 				<div>
-					{role.deadline?.toDateString() ?? ""}
+					{moment(role.deadline).format("DD.MM.YYYY HH:mm") ?? ""}
 				</div>
 			}
 			{/* Колонка статуса */}

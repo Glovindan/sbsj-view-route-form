@@ -165,7 +165,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		setIsEditMode(false)
 	}
 
-	/** Перемещение строки вверх */
+	/** Перемещение строки */
 	const moveRow = (stepNumber: number, isUp: boolean) => {
 		const newRouteData = routeData;
 		// Индекс шага

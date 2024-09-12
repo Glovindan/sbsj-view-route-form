@@ -91,12 +91,32 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		moveRow(data.step, false)
 	}
 
+	/** Перемещение строки роли */
+	const moveRoleRow = (index: number, isUp: boolean) => {
+		const newRowData = data;
+
+		// Индекс строки с которой меняютяся местами
+		let swapIndex = index;
+		if (isUp && index > 0) {
+			swapIndex = index - 1
+		}
+		if (!isUp && index < data.roles.length - 1) {
+			swapIndex = index + 1
+		}
+
+		// Поменять элементы местами в массиве
+		[newRowData.roles[swapIndex], newRowData.roles[index]] = [data.roles[index], data.roles[swapIndex]];
+
+		setRowData(newRowData)
+	}
+
 	/** Разметка подтаблицы ролей */
 	const rolesLayout = (
 		data.roles.map((role, index) =>
-			<RoleRow {...props} roleIndex={index} role={role} />
+			<RoleRow {...props} roleIndex={index} role={role} moveRow={moveRoleRow} />
 		)
 	)
+
 
 	/** Разметка режима редактирования */
 	const editLayout = (

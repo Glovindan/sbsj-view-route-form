@@ -23,24 +23,24 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 	for (let index = 0; index < 3; index++) {
 		const rowItem = new RouteItem()
-		rowItem.step = index
+		for (let j = 0; j < 3; j++) {
+			rowItem.step = index
 
-		const roleItem = new RoleItem()
-		roleItem.roleType = RoleType.group
-		roleItem.deadline = new Date()
-		roleItem.employeeId = 'test_id'
-		roleItem.employeeName = 'Test T.'
-		roleItem.status = 'Согласовано'
-		roleItem.groupId = 'test_id'
-		roleItem.groupName = '123'
+			const roleItem = new RoleItem()
+			roleItem.roleType = RoleType.group
+			roleItem.deadline = new Date()
+			roleItem.employeeId = (Math.random() + 1).toString(36).substring(7)
+			roleItem.employeeName = (Math.random() + 1).toString(36).substring(7)
+			roleItem.status = 'Согласовано'
+			roleItem.groupId = (Math.random() + 1).toString(36).substring(7)
+			roleItem.groupName = '123' + (Math.random() + 1).toString(36).substring(7)
 
-		roleItem.employeeDepartmentName = 'Test Dep'
-		roleItem.employeeDepartmentId = 'ebae2-dab21bb12f'
-		roleItem.employeeNamePosition = 'Test Position'
+			roleItem.employeeDepartmentName = 'Test Dep'
+			roleItem.employeeDepartmentId = 'ebae2-dab21bb12f'
+			roleItem.employeeNamePosition = 'Test Position'
 
-		const roles = [roleItem, roleItem, roleItem]
-		rowItem.roles = roles
-
+			rowItem.roles.push(roleItem)
+		}
 		routeItems.push(rowItem)
 	}
 
