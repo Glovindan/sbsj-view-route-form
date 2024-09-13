@@ -107,7 +107,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 			{
 				tableSettings && tableSettings.isShowDeadline &&
 				<div>
-					{moment(role.deadline).format("DD.MM.YYYY HH:mm") ?? ""}
+					{role.deadline ? moment(role.deadline).format("DD.MM.YYYY HH:mm") : ""}
 				</div>
 			}
 			{/* Колонка статуса */}

@@ -99,7 +99,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		const lastRow = routeDataFiltered.length ? routeDataFiltered[routeDataFiltered.length - 1] : undefined;
 
 		// Номер последнего шага
-		const lastStep = Math.max(...routeData.map(rd => rd.step));
+		const lastStep = Math.max(...routeData.map(rd => rd.step), 0);
 		// Является тип согласования последнего шага параллельным
 		const isLastParallel = lastRow?.isParallel ?? false;
 
