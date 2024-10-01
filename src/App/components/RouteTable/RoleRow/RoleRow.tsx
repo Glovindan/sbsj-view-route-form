@@ -108,6 +108,9 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 				tableSettings && tableSettings.isShowDeadline &&
 				<div>
 					{role.deadline ? moment(role.deadline).format("DD.MM.YYYY HH:mm") : ""}
+					<div className='role-row-overdue'>
+						{role.deadline && role.isDeadlineOverdue && "Просрочено"}
+					</div>
 				</div>
 			}
 			{/* Колонка статуса */}

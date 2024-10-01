@@ -29,6 +29,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 			const roleItem = new RoleItem()
 			roleItem.roleType = RoleType.group
 			roleItem.deadline = new Date()
+			roleItem.isDeadlineOverdue = true
 			roleItem.employeeId = (Math.random() + 1).toString(36).substring(7)
 			roleItem.employeeName = (Math.random() + 1).toString(36).substring(7)
 			roleItem.status = 'Согласовано'

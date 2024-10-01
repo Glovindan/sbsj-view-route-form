@@ -137,9 +137,11 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				</select>
 			</div>
 			{/* Срок согласования */}
-			<div>
-				<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />
-			</div>
+			{tableSettings && tableSettings.isShowTerm &&
+				<div>
+					<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />
+				</div>
+			}
 			{/* Роли */}
 			<div className="sub-table__body">
 				{rolesLayout}
@@ -167,7 +169,9 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 			{/* Тип согласования */}
 			<div> {data.isParallel ? ApprovalType.parallel : ApprovalType.sequential} </div>
 			{/* Срок согласования */}
-			<div> {data.term} </div>
+			{tableSettings && tableSettings.isShowTerm &&
+				<div> {data.term} </div>
+			}
 			{/* Роли */}
 			<div className="sub-table__body"> {rolesLayout} </div>
 			{/* Возможность добавления */}

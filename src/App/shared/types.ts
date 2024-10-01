@@ -108,7 +108,9 @@ export class TableSettings {
 	canEditRoute: boolean
 	/** Показывать дополнительных согласующих */
 	showAdditionalApprovers: boolean
-	/** Показывать срок согласования по задаче */
+	/** Показывать срок согласования по задаче (Кол-во часов)*/
+	isShowTerm: boolean
+	/** Показывать срок согласования по задаче (Датой) */
 	isShowDeadline: boolean
 
 	constructor() {
@@ -124,5 +126,6 @@ export class TableSettings {
 
 		this.showAdditionalApprovers = true
 		this.isShowDeadline = true
+		this.isShowTerm = false
 	}
 }
