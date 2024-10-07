@@ -17,6 +17,20 @@
 	}
 }
 
+.route-textarea {
+	resize: none;
+	width: 100%;
+	height: 100%;
+
+	cursor: text !important;
+}
+
+.route-textarea-view {
+	max-height: 200px;
+	flex: 1;
+	overflow-y: scroll;
+}
+
 // Колонка с действиями
 .column-action {
 	display: flex;

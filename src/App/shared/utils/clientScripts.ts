@@ -42,6 +42,8 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 			rowItem.roles.push(roleItem)
 		}
+		rowItem.condition =
+			'Lorem ipsum odor amet, consectetuer adipiscing elit. Cursus tortor fusce dapibus, taciti egestas ante suspendisse. Velit odio eros pulvinar tortor varius dignissim netus. In penatibus aenean massa iaculis vulputate, potenti rhoncus nulla. Leo integer amet vel cras luctus; vivamus est scelerisque. Vehicula commodo accumsan iaculis senectus tellus. Interdum aptent imperdiet ultrices dignissim curae ornare rutrum? Egestas pellentesque posuere lectus etiam aliquet.'
 		routeItems.push(rowItem)
 	}
 
@@ -50,6 +52,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 /**  Сохранение данных маршрута согласования */
 async function saveRouteData(routeData: RouteItem[]): Promise<void> {
+	console.log(routeData)
 	return
 }
 

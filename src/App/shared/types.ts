@@ -12,6 +12,8 @@ export class RouteItem {
 	canAddUser: boolean
 	/** Удален */
 	deleted: boolean
+	/** Условие */
+	condition: string
 
 	constructor() {
 		this.step = 0
@@ -20,6 +22,7 @@ export class RouteItem {
 		this.roles = []
 		this.canAddUser = false
 		this.deleted = false
+		this.condition = ''
 	}
 }
 
@@ -77,10 +80,13 @@ export class RoleItem {
 	groupName?: string
 	/** Срок согласования */
 	deadline?: Date
+	/** Срок согласования просрочен */
+	isDeadlineOverdue?: boolean
 
 	constructor() {
 		this.roleType = RoleType.user
 		this.status = ''
+		this.isDeadlineOverdue = false
 	}
 }
 
@@ -112,6 +118,8 @@ export class TableSettings {
 	isShowTerm: boolean
 	/** Показывать срок согласования по задаче (Датой) */
 	isShowDeadline: boolean
+	/** Показывать условие */
+	isShowCondition: boolean
 
 	constructor() {
 		this.isReadOnly = false
@@ -127,5 +135,6 @@ export class TableSettings {
 		this.showAdditionalApprovers = true
 		this.isShowDeadline = true
 		this.isShowTerm = false
+		this.isShowCondition = true
 	}
 }
