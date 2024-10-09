@@ -40,6 +40,12 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 		setRowData(data)
 	}
 
+	/** Изменение условия */
+	const onChangeCondition = (ev: any) => {
+		role.condition = ev.target.value;
+		setRowData(data)
+	}
+
 	/** Удаление строки */
 	const deleteRow = () => {
 		data.roles = data.roles.filter((value, index) => {
@@ -119,6 +125,25 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 				<div>
 					{role.status}
 				</div>
+			}
+			{/* Условие */}
+			{
+
+				isEditMode
+					? (
+						tableSettings && tableSettings.isShowCondition &&
+						<div>
+							<textarea className='route-input-field route-textarea' name="condition" value={role.condition} onChange={onChangeCondition}></textarea>
+						</div>
+					)
+					: (
+						tableSettings && tableSettings.isShowCondition &&
+						<div>
+							<div className='route-textarea-view'>
+								{role.condition}
+							</div>
+						</div>
+					)
 			}
 		</div>
 	)

@@ -75,11 +75,11 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(data)
 	}
 
-	/** Изменение условия */
-	const onChangeCondition = (ev: any) => {
-		data.condition = ev.target.value;
-		setRowData(data)
-	}
+	// /** Изменение условия */
+	// const onChangeCondition = (ev: any) => {
+	// 	data.condition = ev.target.value;
+	// 	setRowData(data)
+	// }
 
 	/** Удаление строки */
 	const deleteRow = () => {
@@ -164,12 +164,12 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				</div>
 			}
 			{/* Условие */}
-			{
+			{/* {
 				tableSettings && tableSettings.isShowCondition &&
 				<div>
 					<textarea className='route-input-field route-textarea' name="condition" value={data.condition} onChange={onChangeCondition}></textarea>
 				</div>
-			}
+			} */}
 		</>
 	)
 
@@ -193,14 +193,14 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				<div> {(data.canAddUser && tableSettings && tableSettings.canAddRole) ? BooleanStr.true : BooleanStr.false} </div>
 			}
 			{/* Условие */}
-			{
+			{/* {
 				tableSettings && tableSettings.isShowCondition &&
 				<div>
 					<div className='route-textarea-view'>
 						{data.condition}
 					</div>
 				</div>
-			}
+			} */}
 		</>
 	)
 

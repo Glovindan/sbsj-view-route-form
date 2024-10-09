@@ -213,7 +213,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	}
 
 	/** Настройки ширины столбцов */
-	const gridTemplateColumns: string = `55px 1.2fr ${tableSettings?.isShowTerm ? "1fr" : ""} 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""} ${tableSettings?.isShowCondition ? "1fr" : ""}`
+	const gridTemplateColumns: string = `55px 1.2fr ${tableSettings?.isShowTerm ? "1fr" : ""} 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""}`
 
 	return (
 		<div className='route-table-wrapper'>
@@ -230,10 +230,10 @@ export default function RouteTable({ }: RouteTableRowProps) {
 							<div> Подразделение </div>
 							{tableSettings && tableSettings.isShowDeadline && <div> Срок согласования </div>}
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
+							{tableSettings && tableSettings.isShowCondition && <div> Условие </div>}
 						</div>
 					</div>
 					{tableSettings && tableSettings.isShowAddAbility && <div> Возможность добавления </div>}
-					{tableSettings && tableSettings.isShowCondition && <div> Условие </div>}
 				</div>
 				{!isLoading
 					? <div className="route-table__body">

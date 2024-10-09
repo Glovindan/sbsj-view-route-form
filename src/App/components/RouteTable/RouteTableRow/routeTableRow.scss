@@ -28,7 +28,7 @@
 .route-textarea-view {
 	max-height: 200px;
 	flex: 1;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 // Колонка с действиями
