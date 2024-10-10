@@ -16,7 +16,7 @@ interface RouteTableRowProps {
 export default function RouteTable({ }: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
 	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
-	const [tableSettings, setTableSettings] = useState<TableSettings>()
+	const [tableSettings, setTableSettings] = useState<TableSettings>(new TableSettings())
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -213,7 +213,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	}
 
 	/** Настройки ширины столбцов */
-	const gridTemplateColumns: string = `55px 1.2fr ${tableSettings?.isShowTerm ? "1fr" : ""} 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""}`
+	const gridTemplateColumns: string = `55px 1.2fr ${tableSettings?.isShowTerm ? "1fr" : ""} 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""} ${tableSettings?.isShowIsSingleApprove ? "1fr" : ""}`
 
 	return (
 		<div className='route-table-wrapper'>
@@ -234,6 +234,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 						</div>
 					</div>
 					{tableSettings && tableSettings.isShowAddAbility && <div> Возможность добавления </div>}
+					{tableSettings && tableSettings.isShowIsSingleApprove && <div> Достаточно решения одного из группы </div>}
 				</div>
 				{!isLoading
 					? <div className="route-table__body">

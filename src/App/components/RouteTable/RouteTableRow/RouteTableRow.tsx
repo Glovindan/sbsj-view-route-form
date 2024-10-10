@@ -5,6 +5,7 @@ import AddItemButton from '../AddItemButton/AddItemButton';
 import RoleRow from '../RoleRow/RoleRow';
 import { DefaultTermByType } from '../../../shared/utils/constants';
 import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
+import RouteTableFieldBool from './RouteTableFieldBool/routeTableFieldBool';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
@@ -51,7 +52,7 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 	/** Изменение типа согласования */
 	const onChangeType = (ev: any) => {
 		data.isParallel = ev.target.value == '1';
-		// updateStepTypes(data.isParallel, data.step)
+
 		if (!termChanged) {
 			data.term = data.isParallel ? DefaultTermByType.parallel : DefaultTermByType.sequential
 		}
@@ -75,11 +76,11 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(data)
 	}
 
-	// /** Изменение условия */
-	// const onChangeCondition = (ev: any) => {
-	// 	data.condition = ev.target.value;
-	// 	setRowData(data)
-	// }
+	/** Изменение достаточности решения одного из группы */
+	const onChangeIsSingleApprove = (ev: any) => {
+		data.isSingleApprove = ev.target.value == '1';
+		setRowData(data)
+	}
 
 	/** Удаление строки */
 	const deleteRow = () => {
@@ -157,19 +158,16 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 			{
 				tableSettings && tableSettings.isShowAddAbility &&
 				<div>
-					<select className='route-input-field' name="canAddUser" onChange={onChangeCanAddUser} value={data.canAddUser ? '1' : '0'}>
-						<option value="1">Да</option>
-						<option value="0">Нет</option>
-					</select>
+					<RouteTableFieldBool onChangeValue={onChangeCanAddUser} value={data.canAddUser} />
 				</div>
 			}
-			{/* Условие */}
-			{/* {
-				tableSettings && tableSettings.isShowCondition &&
+			{/* Достаточно решения одного из группы */}
+			{
+				tableSettings && tableSettings.isShowIsSingleApprove &&
 				<div>
-					<textarea className='route-input-field route-textarea' name="condition" value={data.condition} onChange={onChangeCondition}></textarea>
+					<RouteTableFieldBool onChangeValue={onChangeIsSingleApprove} value={data.isSingleApprove} />
 				</div>
-			} */}
+			}
 		</>
 	)
 
@@ -192,15 +190,11 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				tableSettings && tableSettings.isShowAddAbility &&
 				<div> {(data.canAddUser && tableSettings && tableSettings.canAddRole) ? BooleanStr.true : BooleanStr.false} </div>
 			}
-			{/* Условие */}
-			{/* {
-				tableSettings && tableSettings.isShowCondition &&
-				<div>
-					<div className='route-textarea-view'>
-						{data.condition}
-					</div>
-				</div>
-			} */}
+			{/* Достаточно решения одного из группы */}
+			{
+				tableSettings && tableSettings.isShowIsSingleApprove &&
+				<div> {(data.isSingleApprove) ? BooleanStr.true : BooleanStr.false} </div>
+			}
 		</>
 	)
 
