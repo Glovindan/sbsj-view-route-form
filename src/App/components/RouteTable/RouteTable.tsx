@@ -16,7 +16,7 @@ interface RouteTableRowProps {
 export default function RouteTable({ }: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
 	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
-	const [tableSettings, setTableSettings] = useState<TableSettings>(new TableSettings())
+	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getDefaultSettings())
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -25,8 +25,8 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		Scripts.getSettings().then((tableSettings) => setTableSettings(tableSettings))
 	}, [])
 
-	React.useLayoutEffect(() => {
-		if (!tableSettings) return;
+	React.useEffect(() => {
+		if (!tableSettings || tableSettings.isDefaultSettings) return;
 		getRouteData();
 	}, [tableSettings])
 
@@ -231,6 +231,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 							{tableSettings && tableSettings.isShowDeadline && <div> Срок согласования </div>}
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 							{tableSettings && tableSettings.isShowCondition && <div> Условие </div>}
+							{tableSettings && tableSettings.isShowDeleteRole && <div> Запрет удаления </div>}
 						</div>
 					</div>
 					{tableSettings && tableSettings.isShowAddAbility && <div> Возможность добавления </div>}

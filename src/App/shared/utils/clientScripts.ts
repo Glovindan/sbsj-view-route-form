@@ -84,6 +84,11 @@ async function getSettings(): Promise<TableSettings> {
 	return settings
 }
 
+/** Получение изначальных настроек таблицы (синхронно)*/
+function getDefaultSettings(): TableSettings {
+	return new TableSettings()
+}
+
 /**  Получение данных маршрута согласования */
 async function getAdditionalApproversData(): Promise<AdditionalApproverItem[]> {
 	const additionalApproversItems: AdditionalApproverItem[] = []
@@ -128,4 +133,5 @@ export default {
 	toggleAddRole,
 	getSettings,
 	getAdditionalApproversData,
+	getDefaultSettings,
 }

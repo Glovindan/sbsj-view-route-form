@@ -84,6 +84,8 @@ export class RoleItem {
 	isDeadlineOverdue?: boolean
 	/** Условие */
 	condition: string
+	/** Запрет удаления */
+	cantDelete: boolean
 
 	constructor() {
 		this.roleType = RoleType.user
@@ -125,6 +127,10 @@ export class TableSettings {
 	isShowCondition: boolean
 	/** Показывать достаточно решения одного из группы */
 	isShowIsSingleApprove: boolean
+	/** Запрет удаления */
+	isShowDeleteRole: boolean
+	/** Настройки по умолчанию? */
+	isDefaultSettings?: boolean
 
 	constructor() {
 		this.isReadOnly = false
@@ -142,5 +148,12 @@ export class TableSettings {
 		this.isShowTerm = false
 		this.isShowCondition = true
 		this.isShowIsSingleApprove = true
+		this.isShowDeleteRole = true
 	}
+}
+
+/** Да/Нет */
+export enum BooleanStr {
+	true = 'Да',
+	false = 'Нет',
 }

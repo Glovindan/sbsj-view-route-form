@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddRoleCallback, RouteItem, TableSettings } from '../../../shared/types';
+import { AddRoleCallback, BooleanStr, RouteItem, TableSettings } from '../../../shared/types';
 import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
 import RoleRow from '../RoleRow/RoleRow';
@@ -33,12 +33,6 @@ interface RouteTableRowProps {
 enum ApprovalType {
 	parallel = "Параллельное",
 	sequential = "Последовательное"
-}
-
-/** Да/Нет */
-enum BooleanStr {
-	true = "Да",
-	false = "Нет"
 }
 
 /** Строка таблицы Маршрута согласования */

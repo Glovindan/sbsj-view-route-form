@@ -1,8 +1,9 @@
 import React from 'react';
-import { AddRoleCallback, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
+import { AddRoleCallback, BooleanStr, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
 import { onClickDepartment, onClickGroup, onClickUser } from '../../../shared/utils/utils';
 import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
 import moment from 'moment';
+import RouteTableFieldBool from '../RouteTableRow/RouteTableFieldBool/routeTableFieldBool';
 
 /** Пропсы компонента */
 interface RoleRowProps {
@@ -43,6 +44,12 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 	/** Изменение условия */
 	const onChangeCondition = (ev: any) => {
 		role.condition = ev.target.value;
+		setRowData(data)
+	}
+
+	/** Изменение запрета на удаление */
+	const onChangeCanDeleteRole = (ev: any) => {
+		role.cantDelete = ev.target.value == '1';
 		setRowData(data)
 	}
 
@@ -89,11 +96,10 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 						<span>&nbsp;<span className="route-table__user-link" onClick={() => onClickUser(role.employeeId!)}>({role.employeeName})</span></span>
 					}
 				</div>
-				{/* TODO */}
 				{
 					isEditMode &&
 					<div className="column-action__actions">
-						<div onClick={deleteRow} className="column-action__button">{removeIcon}</div>
+						{tableSettings && (tableSettings.canDeleteRole || !role.cantDelete) && <div onClick={deleteRow} className="column-action__button">{removeIcon}</div>}
 						<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
 						<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
 					</div>
@@ -143,6 +149,21 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 								{role.condition}
 							</div>
 						</div>
+					)
+			}
+			{/* Запрет удаления */}
+			{
+
+				isEditMode
+					? (
+						tableSettings && tableSettings.isShowDeleteRole &&
+						<div>
+							<RouteTableFieldBool onChangeValue={onChangeCanDeleteRole} value={role.cantDelete} />
+						</div>
+					)
+					: (
+						tableSettings && tableSettings.isShowDeleteRole &&
+						<div> {(role.cantDelete) ? BooleanStr.true : BooleanStr.false} </div>
 					)
 			}
 		</div>
