@@ -44,6 +44,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 			rowItem.roles.push(roleItem)
 		}
+		rowItem.canDelete = Math.random() > 0.5
 		routeItems.push(rowItem)
 	}
 
@@ -80,13 +81,15 @@ async function getSettings(): Promise<TableSettings> {
 	settings.isReadOnly = false
 	settings.isShowStatus = true
 	settings.canEditRoute = true
+	settings.canDeleteStep = true
+	settings.isShowDeleteStep = true
 
 	return settings
 }
 
 /** Получение изначальных настроек таблицы (синхронно)*/
 function getDefaultSettings(): TableSettings {
-	return new TableSettings()
+	return new TableSettings();
 }
 
 /**  Получение данных маршрута согласования */

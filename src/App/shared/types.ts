@@ -14,6 +14,8 @@ export class RouteItem {
 	deleted: boolean
 	/** Достаточно решения одного из группы */
 	isSingleApprove: boolean
+	/** Возможность удаления шага */
+	canDelete: boolean
 
 	constructor() {
 		this.step = 0
@@ -23,6 +25,7 @@ export class RouteItem {
 		this.canAddUser = false
 		this.deleted = false
 		this.isSingleApprove = false
+		this.canDelete = true
 	}
 }
 
@@ -127,8 +130,10 @@ export class TableSettings {
 	isShowCondition: boolean
 	/** Показывать достаточно решения одного из группы */
 	isShowIsSingleApprove: boolean
-	/** Запрет удаления */
+	/** Показывать запрет удаления роли */
 	isShowDeleteRole: boolean
+	/** Показывать запрет удаления шага */
+	isShowDeleteStep: boolean
 	/** Настройки по умолчанию? */
 	isDefaultSettings?: boolean
 
@@ -149,6 +154,7 @@ export class TableSettings {
 		this.isShowCondition = true
 		this.isShowIsSingleApprove = true
 		this.isShowDeleteRole = true
+		this.isShowDeleteStep = true
 	}
 }
 

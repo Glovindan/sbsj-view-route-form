@@ -77,7 +77,7 @@
 		}
 
 		display: grid;
-		grid-template-columns: 0.3fr 1.2fr 1fr 5fr 1fr;
+		grid-template-columns: 0.3fr 1.2fr 1fr 5fr 1fr 1fr;
 		border-bottom: var(--table-border-settings);
 		border-width: 2px;
 
@@ -126,7 +126,7 @@
 .route-table-body {
 	&__row {
 		display: grid;
-		grid-template-columns: 0.3fr 1.2fr 1fr 5fr 1fr;
+		grid-template-columns: 0.3fr 1.2fr 1fr 5fr 1fr 1fr;
 
 		&:nth-child(odd) {
 			background: #f0f0f0;

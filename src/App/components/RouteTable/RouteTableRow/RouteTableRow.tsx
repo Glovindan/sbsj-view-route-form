@@ -70,6 +70,12 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(data)
 	}
 
+	/** Изменение возможности удаления шага */
+	const onChangeCanDelete = (ev: any) => {
+		data.canDelete = ev.target.value == '1';
+		setRowData(data)
+	}
+
 	/** Изменение достаточности решения одного из группы */
 	const onChangeIsSingleApprove = (ev: any) => {
 		data.isSingleApprove = ev.target.value == '1';
@@ -118,14 +124,13 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		)
 	)
 
-
 	/** Разметка режима редактирования */
 	const editLayout = (
 		<>
 			<div className="column-action">
 				<div>{index + 1}</div>
 				<div className="column-action__actions">
-					{tableSettings && tableSettings.canDeleteStep && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
+					{tableSettings && tableSettings.canDeleteStep && data.canDelete && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
 					<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
 					<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
 				</div>
@@ -148,6 +153,13 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				{rolesLayout}
 				{data.canAddUser && <AddItemButton handleAddClick={onClickAddRole} />}
 			</div>
+			{/* Возможность удаления шага */}
+			{
+				tableSettings && tableSettings.isShowDeleteStep &&
+				<div>
+					<RouteTableFieldBool onChangeValue={onChangeCanDelete} value={data.canDelete} />
+				</div>
+			}
 			{/* Возможность добавления */}
 			{
 				tableSettings && tableSettings.isShowAddAbility &&
@@ -179,6 +191,11 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 			}
 			{/* Роли */}
 			<div className="sub-table__body"> {rolesLayout} </div>
+			{/* Возможность удаления шага */}
+			{
+				tableSettings && tableSettings.isShowDeleteStep &&
+				<div> {(data.canDelete && tableSettings && tableSettings.canDeleteStep) ? BooleanStr.true : BooleanStr.false} </div>
+			}
 			{/* Возможность добавления */}
 			{
 				tableSettings && tableSettings.isShowAddAbility &&
