@@ -234,7 +234,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 							{tableSettings && tableSettings.isShowDeleteRole && <div> Запрет удаления роли </div>}
 						</div>
 					</div>
-					{tableSettings && tableSettings.isShowDeleteStep && <div> Запрет удаления шага </div>}
+					{tableSettings && tableSettings.isShowDeleteStep && <div> Возможность удаления шага </div>}
 					{tableSettings && tableSettings.isShowAddAbility && <div> Возможность добавления </div>}
 					{tableSettings && tableSettings.isShowIsSingleApprove && <div> Достаточно решения одного из группы </div>}
 				</div>
