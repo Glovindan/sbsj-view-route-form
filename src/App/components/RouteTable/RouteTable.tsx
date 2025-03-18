@@ -79,7 +79,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const editRowFactory = (row: RouteItem) => {
 		return (newRowItem: RouteItem) => {
 			Object.assign(row, newRowItem);
-			
+
 			// Изменено в NEW_СЭД. Корректировки в Маршруте согласования
 			// Обновление типов при удалении
 			// if (newRowItem.deleted) {
@@ -93,7 +93,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 			setRouteData([...routeData])
 		}
 	}
-
+	
 	/** Обработчик добавления строки в маршрут */
 	const handleAddRouteRow = () => {
 		const routeDataFiltered = routeData.filter(rd => !rd.deleted);
