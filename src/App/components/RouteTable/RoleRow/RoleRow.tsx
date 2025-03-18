@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddRoleCallback, BooleanStr, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
+import { AddRoleCallback, ApprovalStatuses, BooleanStr, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
 import { onClickDepartment, onClickGroup, onClickUser } from '../../../shared/utils/utils';
 import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
 import moment from 'moment';
@@ -72,6 +72,25 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 		moveRow(roleIndex, false)
 	}
 
+	/** Получить наименование класса для группы */
+	const getGroupClassName = () => {
+		// Для оргструктуры без стиля
+		const linkClassName = role.roleType == RoleType.group ? "route-table__link" : null;
+		// Для текущего согласующего = жирный шрифт
+		const boldClassName = role.status == ApprovalStatuses.atApproval ? "route-table__bold" : null;
+		
+		return [linkClassName, boldClassName].filter(className => className).join(" ");
+	}
+	
+	/** Получить наименование класса для пользователя */
+	const getUserClassName = () => {
+		const linkClassName = "route-table__user-link";
+		// Для текущего согласующего = жирный шрифт
+		const boldClassName = role.status == ApprovalStatuses.atApproval ? "route-table__bold" : null;
+
+		return [linkClassName, boldClassName].filter(className => className).join(" ");
+	}
+
 	return (
 		<div className={`route-table__row sub-table__row`}>
 			{/* Колонка с действиями */}
@@ -83,17 +102,17 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 						role.groupId != undefined
 							?
 							<span
-								className={role.roleType == RoleType.group ? "route-table__link" : ""}
+								className={getGroupClassName()}
 								onClick={role.roleType == RoleType.group ? () => onClickGroup(role.groupId!) : () => { }}
 							>
 								{role.groupName}
 							</span>
-							: (role.employeeId && <span className="route-table__user-link" onClick={() => onClickUser(role.employeeId!)}>{role.employeeName}</span>)
+							: (role.employeeId && <span className={getUserClassName()} onClick={() => onClickUser(role.employeeId!)}>{role.employeeName}</span>)
 					}
 					{/* Если указана группа и найден согласующий пользователь */}
 					{
 						role.groupId != undefined && role.employeeId != undefined &&
-						<span>&nbsp;<span className="route-table__user-link" onClick={() => onClickUser(role.employeeId!)}>({role.employeeName})</span></span>
+						<span>&nbsp;<span className={getUserClassName()} onClick={() => onClickUser(role.employeeId!)}>({role.employeeName})</span></span>
 					}
 				</div>
 				{
@@ -125,6 +144,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 					</div>
 				</div>
 			}
+			
 			{/* Колонка статуса */}
 			{
 				isShowStatus &&

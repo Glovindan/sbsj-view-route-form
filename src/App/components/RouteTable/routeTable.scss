@@ -66,6 +66,10 @@
 		}
 	}
 
+	&__bold {
+		font-weight: bold;
+	}
+
 	&__row {
 		word-break: break-word;
 		&:nth-child(even) {

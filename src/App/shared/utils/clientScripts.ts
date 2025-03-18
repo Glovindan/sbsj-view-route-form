@@ -1,6 +1,7 @@
 import {
 	AddRoleCallback,
 	AdditionalApproverItem,
+	ApprovalStatuses,
 	RoleItem,
 	RoleType,
 	RouteItem,
@@ -32,7 +33,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 			roleItem.isDeadlineOverdue = true
 			roleItem.employeeId = (Math.random() + 1).toString(36).substring(7)
 			roleItem.employeeName = (Math.random() + 1).toString(36).substring(7)
-			roleItem.status = 'Согласовано'
+			roleItem.status = Math.random() > 0.5 ? ApprovalStatuses.atApproval : ApprovalStatuses.approved
 			roleItem.groupId = (Math.random() + 1).toString(36).substring(7)
 			roleItem.groupName = '123' + (Math.random() + 1).toString(36).substring(7)
 
