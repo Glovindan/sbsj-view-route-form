@@ -79,15 +79,16 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const editRowFactory = (row: RouteItem) => {
 		return (newRowItem: RouteItem) => {
 			Object.assign(row, newRowItem);
-
+			
+			// Изменено в NEW_СЭД. Корректировки в Маршруте согласования
 			// Обновление типов при удалении
-			if (newRowItem.deleted) {
-				const lastNotDeletedElement = getLastNotDeletedElement(newRowItem.step)
-				if (lastNotDeletedElement) updateStepTypes(lastNotDeletedElement.isParallel, lastNotDeletedElement.step)
-				// Обновление типов при других изменениях
-			} else {
-				updateStepTypes(newRowItem.isParallel, newRowItem.step)
-			}
+			// if (newRowItem.deleted) {
+			// 	const lastNotDeletedElement = getLastNotDeletedElement(newRowItem.step)
+			// 	if (lastNotDeletedElement) updateStepTypes(lastNotDeletedElement.isParallel, lastNotDeletedElement.step)
+			// 	// Обновление типов при других изменениях
+			// } else {
+			// 	updateStepTypes(newRowItem.isParallel, newRowItem.step)
+			// }
 
 			setRouteData([...routeData])
 		}
@@ -201,10 +202,11 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 		if (stepBeforeIndex == -1 || !stepBefore) return;
 
-		// Поменять типы согласования
-		const typeBuff = step.isParallel;
-		step.isParallel = stepBefore.isParallel;
-		stepBefore.isParallel = typeBuff;
+		// Изменено в NEW_СЭД. Корректировки в Маршруте согласования
+		// // Поменять типы согласования
+		// const typeBuff = step.isParallel;
+		// step.isParallel = stepBefore.isParallel;
+		// stepBefore.isParallel = typeBuff;
 
 		// Поменять элементы местами в массиве
 		[newRouteData[stepBeforeIndex], newRouteData[stepIndex]] = [newRouteData[stepIndex], newRouteData[stepBeforeIndex]];
@@ -220,7 +222,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 			<div className='table-title'>Маршрут согласования</div>
 			<div className="my-table route-table">
 				<div className="route-table__header route-table__row" style={{ gridTemplateColumns: gridTemplateColumns }}>
-					<div> Шаг </div>
+					<div> № </div>
 					<div> Тип согласования </div>
 					{tableSettings && tableSettings.isShowTerm && <div> Срок согласования </div>}
 					<div className="sub-table__body">
