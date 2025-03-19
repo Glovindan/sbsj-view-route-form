@@ -105,6 +105,10 @@
 			}
 		}
 
+		& > .route-table__bold {
+			font-weight: bold;
+		}
+
 		& input,
 		& select {
 			width: 100%;

@@ -71,13 +71,18 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 	const moveRowDown = () => {
 		moveRow(roleIndex, false)
 	}
+	
+	// Для текущего согласующего = жирный шрифт
+	const getBoldClassName = () => {
+		return role.status == ApprovalStatuses.atApproval || role.status == ApprovalStatuses.atEdit ? "route-table__bold" : null;
+	}
 
 	/** Получить наименование класса для группы */
 	const getGroupClassName = () => {
 		// Для оргструктуры без стиля
 		const linkClassName = role.roleType == RoleType.group ? "route-table__link" : null;
 		// Для текущего согласующего = жирный шрифт
-		const boldClassName = role.status == ApprovalStatuses.atApproval ? "route-table__bold" : null;
+		const boldClassName = getBoldClassName();
 		
 		return [linkClassName, boldClassName].filter(className => className).join(" ");
 	}
@@ -86,7 +91,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 	const getUserClassName = () => {
 		const linkClassName = "route-table__user-link";
 		// Для текущего согласующего = жирный шрифт
-		const boldClassName = role.status == ApprovalStatuses.atApproval ? "route-table__bold" : null;
+		const boldClassName = getBoldClassName();
 
 		return [linkClassName, boldClassName].filter(className => className).join(" ");
 	}
@@ -125,11 +130,11 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 				}
 			</div>
 			{/* Должность */}
-			<div>
+			<div className={getBoldClassName() ?? ""}>
 				{role.employeeNamePosition}
 			</div>
 			{/* Подразделение */}
-			<div>
+			<div className={getBoldClassName() ?? ""}>
 				<span className={role.employeeDepartmentId && "route-table__user-link"} onClick={() => role.employeeDepartmentId && onClickDepartment(role.employeeDepartmentId)}>
 					{role.employeeDepartmentName}
 				</span>
@@ -137,7 +142,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 			{/* Срок согласования */}
 			{
 				tableSettings && tableSettings.isShowDeadline &&
-				<div>
+				<div className={getBoldClassName() ?? ""}>
 					{role.deadline ? moment(role.deadline).format("DD.MM.YYYY HH:mm") : ""}
 					<div className='role-row-overdue'>
 						{role.deadline && role.isDeadlineOverdue && "Просрочено"}
@@ -148,7 +153,7 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 			{/* Колонка статуса */}
 			{
 				isShowStatus &&
-				<div>
+				<div className={getBoldClassName() ?? ""}>
 					{role.status}
 				</div>
 			}
