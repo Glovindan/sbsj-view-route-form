@@ -24,7 +24,7 @@ export class RouteItem {
 		this.roles = []
 		this.canAddUser = false
 		this.deleted = false
-		this.isSingleApprove = false
+		this.isSingleApprove = true
 		this.canDelete = true
 	}
 }
