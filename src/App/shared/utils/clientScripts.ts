@@ -131,6 +131,10 @@ async function getAdditionalApproversData(): Promise<AdditionalApproverItem[]> {
 	return additionalApproversItems
 }
 
+function getElmaUUID(): string {
+	return `\<\%\=Context\.data\.root_uuid\%\>`
+}
+
 export default {
 	getRouteData,
 	saveRouteData,
@@ -138,4 +142,5 @@ export default {
 	getSettings,
 	getAdditionalApproversData,
 	getDefaultSettings,
+	getElmaUUID,
 }
