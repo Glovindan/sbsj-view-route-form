@@ -135,6 +135,14 @@ function getElmaUUID(): string {
 	return `\<\%\=Context\.data\.root_uuid\%\>`
 }
 
+// Mock
+let routeDataBuffer: RouteItem[] = [];
+function setRouteData(routeData: RouteItem[]) {
+	routeDataBuffer = routeData;
+}
+
+// При сохранении формы работать с routeDataBuffer
+
 export default {
 	getRouteData,
 	saveRouteData,
@@ -143,4 +151,6 @@ export default {
 	getAdditionalApproversData,
 	getDefaultSettings,
 	getElmaUUID,
+
+	setRouteData,
 }

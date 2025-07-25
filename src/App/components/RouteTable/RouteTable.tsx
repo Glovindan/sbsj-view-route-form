@@ -149,6 +149,11 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		setIsEditMode(true)
 	}
 
+	useEffect(() => {
+		// Триггерить скрипт Elma чтобы установить routeData.
+		Scripts.setRouteData(routeData);
+	}, [routeData])
+
 	/** Обработка нажатия на кнопку сохранения */
 	const handleSaveClick = () => {
 		setIsSaving(true)
