@@ -33,10 +33,14 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	/** Получение данных Маршрута */
 	const getRouteData = async () => {
 		setIsLoading(true);
+		setIsEditMode(false); // Запретить изменение при подгрузке данных
+
 		const data = await Scripts.getRouteData();
 		setRouteData(data);
 		setInitialRouteData(data)
 		setIsLoading(false);
+
+		setIsEditMode(Scripts.checkIsWidgetEditMode()); // Разрешить изменение после подгрузки если форма в режиме редактирования
 	}
 
 	/** Создание функции Добавить роль */
@@ -150,17 +154,20 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	}
 
 	useEffect(() => {
-		// Триггерить скрипт Elma чтобы установить routeData.
-		Scripts.setRouteData(routeData);
+		if(!isEditMode) return; // Если не в режиме изменения - не изменять
+		Scripts.saveRouteData(routeData);
 	}, [routeData])
 
 	/** Обработка нажатия на кнопку сохранения */
 	const handleSaveClick = () => {
-		setIsSaving(true)
-		Scripts.saveRouteData(routeData).then(() => {
-			setIsSaving(false)
-			getRouteData()
-		});
+		// setIsSaving(true)
+		// Scripts.saveRouteData(routeData).then(() => {
+		// 	setIsSaving(false)
+		// 	getRouteData()
+		// });
+		
+		Scripts.saveRouteData(routeData)
+		getRouteData()
 		setIsEditMode(false)
 	}
 
@@ -274,7 +281,8 @@ export default function RouteTable({ }: RouteTableRowProps) {
 					</div>
 				}
 			</div>
-			{
+			{/* TODO: Убрать кнопки, ориентироваться на режим формы */}
+			{/* {
 				tableSettings && tableSettings.canEditRoute && !tableSettings.isReadOnly &&
 				(!isSaving
 					? <div className='route-table-actions'>
@@ -286,7 +294,7 @@ export default function RouteTable({ }: RouteTableRowProps) {
 						<Loader />
 					</div>
 				)
-			}
+			} */}
 		</div>
 	)
 }

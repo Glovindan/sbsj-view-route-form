@@ -53,7 +53,8 @@ async function getRouteData(): Promise<RouteItem[]> {
 }
 
 /**  Сохранение данных маршрута согласования */
-async function saveRouteData(routeData: RouteItem[]): Promise<void> {
+function saveRouteData(routeData: RouteItem[]) {
+	// TODO: Сделать синхронной
 	console.log(routeData)
 	return
 }
@@ -136,12 +137,16 @@ function getElmaUUID(): string {
 }
 
 // Mock
-let routeDataBuffer: RouteItem[] = [];
-function setRouteData(routeData: RouteItem[]) {
-	routeDataBuffer = routeData;
-}
+// let routeDataBuffer: RouteItem[] = [];
+// function setRouteData(routeData: RouteItem[]) {
+// 	routeDataBuffer = routeData;
+// }
 
-// При сохранении формы работать с routeDataBuffer
+/** Находится ли форма в режиме изменения */
+function checkIsWidgetEditMode() {
+	// TODO: Реализация
+	return true
+}
 
 export default {
 	getRouteData,
@@ -152,5 +157,7 @@ export default {
 	getDefaultSettings,
 	getElmaUUID,
 
-	setRouteData,
+	// setRouteData,
+
+	checkIsWidgetEditMode,
 }
