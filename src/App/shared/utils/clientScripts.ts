@@ -136,12 +136,6 @@ function getElmaUUID(): string {
 	return `\<\%\=Context\.data\.root_uuid\%\>`
 }
 
-// Mock
-// let routeDataBuffer: RouteItem[] = [];
-// function setRouteData(routeData: RouteItem[]) {
-// 	routeDataBuffer = routeData;
-// }
-
 /** Находится ли форма в режиме изменения */
 function checkIsWidgetEditMode() {
 	// TODO: Реализация
@@ -156,8 +150,6 @@ export default {
 	getAdditionalApproversData,
 	getDefaultSettings,
 	getElmaUUID,
-
-	// setRouteData,
 
 	checkIsWidgetEditMode,
 }

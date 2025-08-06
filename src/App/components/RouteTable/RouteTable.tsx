@@ -19,7 +19,6 @@ export default function RouteTable({ }: RouteTableRowProps) {
 	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getDefaultSettings())
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [isSaving, setIsSaving] = useState<boolean>(false)
 
 	React.useLayoutEffect(() => {
 		Scripts.getSettings().then((tableSettings) => setTableSettings(tableSettings))
@@ -29,6 +28,11 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		if (!tableSettings || tableSettings.isDefaultSettings) return;
 		getRouteData();
 	}, [tableSettings])
+
+	useEffect(() => {
+		if(!isEditMode) return; // Если не в режиме редактирования - не изменять основную таблицу
+		Scripts.saveRouteData(routeData);
+	}, [routeData])
 
 	/** Получение данных Маршрута */
 	const getRouteData = async () => {
@@ -62,37 +66,10 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		}
 	}
 
-	/** Получение последнего неудаленного элемента */
-	const getLastNotDeletedElement = (stepNumber: number) => {
-		// От шага к началу
-		for (let index = stepNumber; index >= 0; index--) {
-			const rowData = routeData[index];
-			if (!rowData || rowData.deleted) continue;
-			return rowData
-		}
-
-		// От шага к концу
-		for (let index = stepNumber; index < routeData.length; index++) {
-			const rowData = routeData[index];
-			if (!rowData || rowData.deleted) continue;
-			return rowData
-		}
-	}
-
 	/** Создание функции Добавить роль */
 	const editRowFactory = (row: RouteItem) => {
 		return (newRowItem: RouteItem) => {
 			Object.assign(row, newRowItem);
-
-			// Изменено в NEW_СЭД. Корректировки в Маршруте согласования
-			// Обновление типов при удалении
-			// if (newRowItem.deleted) {
-			// 	const lastNotDeletedElement = getLastNotDeletedElement(newRowItem.step)
-			// 	if (lastNotDeletedElement) updateStepTypes(lastNotDeletedElement.isParallel, lastNotDeletedElement.step)
-			// 	// Обновление типов при других изменениях
-			// } else {
-			// 	updateStepTypes(newRowItem.isParallel, newRowItem.step)
-			// }
 
 			setRouteData([...routeData])
 		}
@@ -119,73 +96,12 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		setRouteData([...routeData])
 	}
 
-	/** Обновление типов шагов при изменении типа в одном шаге */
-	const updateStepTypes = (isParallel: boolean, stepNumber: number) => {
-		const newRouteData = routeData;
-		// Индекс измененного шага
-		const changedStepIndex = newRouteData.findIndex(rdf => rdf.step === stepNumber);
-
-		let isParallelBuffer = !isParallel;
-		// От шага к началу
-		for (let index = changedStepIndex - 1; index >= 0; index--) {
-			const rowData = newRouteData[index];
-			if (!rowData || rowData.deleted) continue;
-
-			rowData.isParallel = isParallelBuffer;
-			isParallelBuffer = !isParallelBuffer;
-		}
-
-		isParallelBuffer = !isParallel;
-		// От шага к концу
-		for (let index = changedStepIndex + 1; index < newRouteData.length; index++) {
-			const rowData = newRouteData[index];
-			if (!rowData || rowData.deleted) continue;
-
-			rowData.isParallel = isParallelBuffer;
-			isParallelBuffer = !isParallelBuffer;
-		}
-
-		setRouteData([...newRouteData])
-	}
-
-	/** Обработка нажатия на кнопку редактирования */
-	const handleEditClick = () => {
-		setIsEditMode(true)
-	}
-
-	useEffect(() => {
-		if(!isEditMode) return; // Если не в режиме изменения - не изменять
-		Scripts.saveRouteData(routeData);
-	}, [routeData])
-
-	/** Обработка нажатия на кнопку сохранения */
-	const handleSaveClick = () => {
-		// setIsSaving(true)
-		// Scripts.saveRouteData(routeData).then(() => {
-		// 	setIsSaving(false)
-		// 	getRouteData()
-		// });
-		
-		Scripts.saveRouteData(routeData)
-		getRouteData()
-		setIsEditMode(false)
-	}
-
-	/** Обработка нажатия на кнопку отмены */
-	const handleCancelClick = () => {
-		setRouteData(initialRouteData)
-		getRouteData()
-		setIsEditMode(false)
-	}
-
 	/** Перемещение строки */
 	const moveRow = (stepNumber: number, isUp: boolean) => {
 		const newRouteData = routeData;
 		// Индекс шага
 		const stepIndex = newRouteData.findIndex(rdf => rdf.step === stepNumber && !rdf.deleted);
 		if (stepIndex == -1) return;
-
-		const step = newRouteData[stepIndex];
 
 		let stepBefore: RouteItem | undefined;
 		let stepBeforeIndex: number = -1;
@@ -213,12 +129,6 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		}
 
 		if (stepBeforeIndex == -1 || !stepBefore) return;
-
-		// Изменено в NEW_СЭД. Корректировки в Маршруте согласования
-		// // Поменять типы согласования
-		// const typeBuff = step.isParallel;
-		// step.isParallel = stepBefore.isParallel;
-		// stepBefore.isParallel = typeBuff;
 
 		// Поменять элементы местами в массиве
 		[newRouteData[stepBeforeIndex], newRouteData[stepIndex]] = [newRouteData[stepIndex], newRouteData[stepBeforeIndex]];
@@ -281,20 +191,6 @@ export default function RouteTable({ }: RouteTableRowProps) {
 					</div>
 				}
 			</div>
-			{/* TODO: Убрать кнопки, ориентироваться на режим формы */}
-			{/* {
-				tableSettings && tableSettings.canEditRoute && !tableSettings.isReadOnly &&
-				(!isSaving
-					? <div className='route-table-actions'>
-						{!isEditMode && <button className='route-table-button' onClick={handleEditClick}>Редактировать</button>}
-						{isEditMode && <button className='route-table-button' onClick={handleSaveClick}>Сохранить</button>}
-						{isEditMode && <button className='route-table-button route-table-button_outline' onClick={handleCancelClick}>Отменить</button>}
-					</div>
-					: <div className='route-table-actions'>
-						<Loader />
-					</div>
-				)
-			} */}
 		</div>
 	)
 }
