@@ -141,18 +141,18 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	return (
 		<div className='route-table-wrapper'>
-			<div className='table-title'>Маршрут согласования</div>
+			<div className='table-title'>Маршрут голосования</div>
 			<div className="my-table route-table">
 				<div className="route-table__header route-table__row" style={{ gridTemplateColumns: gridTemplateColumns }}>
 					<div> № </div>
-					<div> Тип согласования </div>
-					{tableSettings && tableSettings.isShowTerm && <div> Срок согласования </div>}
+					<div> Тип голосования </div>
+					{tableSettings && tableSettings.isShowTerm && <div> Срок голосования </div>}
 					<div className="sub-table__body">
 						<div className='route-table__header route-table__row sub-table__row'>
 							<div> ФИО </div>
 							<div> Должность </div>
 							<div> Подразделение </div>
-							{tableSettings && tableSettings.isShowDeadline && <div> Срок согласования </div>}
+							{tableSettings && tableSettings.isShowDeadline && <div> Срок голосования </div>}
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 							{tableSettings && tableSettings.isShowCondition && <div> Условие </div>}
 							{tableSettings && tableSettings.isShowDeleteRole && <div> Запрет удаления роли </div>}
