@@ -113,6 +113,9 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 
 		// Поменять элементы местами в массиве
 		[newRowData.roles[swapIndex], newRowData.roles[index]] = [data.roles[index], data.roles[swapIndex]];
+		// Поменять значения возможности перемещения в строках чтобы зафиксировать это значение в индексе
+		[newRowData.roles[swapIndex].cantMoveDown, newRowData.roles[index].cantMoveDown] = [data.roles[index].cantMoveDown, data.roles[swapIndex].cantMoveDown];
+		[newRowData.roles[swapIndex].cantMoveUp, newRowData.roles[index].cantMoveUp] = [data.roles[index].cantMoveUp, data.roles[swapIndex].cantMoveUp];
 
 		setRowData(newRowData)
 	}
@@ -131,8 +134,8 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				<div>{index + 1}</div>
 				<div className="column-action__actions">
 					{tableSettings && tableSettings.canDeleteStep && data.canDelete && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
-					<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
-					<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
+					{data.canMove && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
+					{data.canMove && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
 				</div>
 			</div>
 			{/* Тип согласования */}

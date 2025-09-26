@@ -16,6 +16,8 @@ export class RouteItem {
 	isSingleApprove: boolean
 	/** Возможность удаления шага */
 	canDelete: boolean
+    /** Возможность перемещения шага */
+    canMove: boolean
 
 	constructor() {
 		this.step = 0
@@ -26,6 +28,7 @@ export class RouteItem {
 		this.deleted = false
 		this.isSingleApprove = true
 		this.canDelete = true
+        this.canMove = false
 	}
 }
 
@@ -89,12 +92,19 @@ export class RoleItem {
 	condition: string
 	/** Запрет удаления */
 	cantDelete: boolean
+    /** Запрет перемещения вверх */
+    cantMoveUp:boolean
+    /** Запрет перемещения вниз */
+    cantMoveDown:boolean
 
 	constructor() {
 		this.roleType = RoleType.user
 		this.status = ''
 		this.condition = ''
 		this.isDeadlineOverdue = false
+		this.cantDelete = false;
+        this.cantMoveUp = false;
+        this.cantMoveDown = false;
 	}
 }
 

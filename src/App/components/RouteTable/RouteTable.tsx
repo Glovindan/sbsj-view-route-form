@@ -133,6 +133,9 @@ export default function RouteTable({ }: RouteTableRowProps) {
 		// Поменять элементы местами в массиве
 		[newRouteData[stepBeforeIndex], newRouteData[stepIndex]] = [newRouteData[stepIndex], newRouteData[stepBeforeIndex]];
 
+		// Поменять значения возможности перемещения в строках чтобы зафиксировать это значение в индексе
+		[newRouteData[stepBeforeIndex].canMove, newRouteData[stepIndex].canMove] = [newRouteData[stepIndex].canMove, newRouteData[stepBeforeIndex].canMove]
+
 		setRouteData([...newRouteData])
 	}
 

@@ -42,10 +42,13 @@ async function getRouteData(): Promise<RouteItem[]> {
 			roleItem.employeeNamePosition = 'Test Position'
 			roleItem.condition =
 				'Lorem ipsum odor amet, consectetuer adipiscing elit. Cursus tortor fusce dapibus, taciti egestas ante suspendisse. Velit odio eros pulvinar tortor varius dignissim netus. In penatibus aenean massa iaculis vulputate, potenti rhoncus nulla. Leo integer amet vel cras luctus; vivamus est scelerisque. Vehicula commodo accumsan iaculis senectus tellus. Interdum aptent imperdiet ultrices dignissim curae ornare rutrum? Egestas pellentesque posuere lectus etiam aliquet.'
+			roleItem.cantMoveDown = Math.random() > 0.5;
+			roleItem.cantMoveUp = Math.random() > 0.5;
 
 			rowItem.roles.push(roleItem)
 		}
 		rowItem.canDelete = Math.random() > 0.5
+		rowItem.canMove = Math.random() > 0.5
 		routeItems.push(rowItem)
 	}
 

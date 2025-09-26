@@ -124,8 +124,8 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 					isEditMode &&
 					<div className="column-action__actions">
 						{tableSettings && tableSettings.canDeleteRole && !role.cantDelete && <div onClick={deleteRow} className="column-action__button">{removeIcon}</div>}
-						<div onClick={moveRowUp} className="column-action__button">{upIcon}</div>
-						<div onClick={moveRowDown} className="column-action__button">{downIcon}</div>
+						{!role.cantMoveUp && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
+						{!role.cantMoveDown && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
 					</div>
 				}
 			</div>
