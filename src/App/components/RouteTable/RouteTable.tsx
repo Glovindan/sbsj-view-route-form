@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Scripts from '../../shared/utils/clientScripts'
-import { AddRoleCallback, RoleItem, RouteItem, TableSettings } from '../../shared/types';
+import { AddRoleCallback, RoleItem, RouteItem, RouteTableCaptions, TableSettings } from '../../shared/types';
 import RouteTableRow from './RouteTableRow/RouteTableRow';
 import AddItemButton from './AddItemButton/AddItemButton';
 import Loader from '../Loader/Loader';
@@ -8,12 +8,12 @@ import { DefaultTermByType } from '../../shared/utils/constants';
 
 /** Пропсы компонента */
 interface RouteTableRowProps {
-	/** Показывать статус */
-	// isShowStatus?: boolean
+	/** Надписи */
+	captions: RouteTableCaptions
 }
 
 /** Таблица Маршрута согласования */
-export default function RouteTable({ }: RouteTableRowProps) {
+export default function RouteTable({captions}: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
 	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
 	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getDefaultSettings())
@@ -144,18 +144,18 @@ export default function RouteTable({ }: RouteTableRowProps) {
 
 	return (
 		<div className='route-table-wrapper'>
-			<div className='table-title'>Маршрут согласования</div>
+			<div className='table-title'>{captions.title}</div>
 			<div className="my-table route-table">
 				<div className="route-table__header route-table__row" style={{ gridTemplateColumns: gridTemplateColumns }}>
 					<div> № </div>
-					<div> Тип согласования </div>
-					{tableSettings && tableSettings.isShowTerm && <div> Срок согласования </div>}
+					<div>{captions.type}</div>
+					{tableSettings && tableSettings.isShowTerm && <div>{captions.term}</div>}
 					<div className="sub-table__body">
 						<div className='route-table__header route-table__row sub-table__row'>
 							<div> ФИО </div>
 							<div> Должность </div>
 							<div> Подразделение </div>
-							{tableSettings && tableSettings.isShowDeadline && <div> Срок согласования </div>}
+							{tableSettings && tableSettings.isShowDeadline && <div>{captions.termSubTable}</div>}
 							{tableSettings && tableSettings.isShowStatus && <div> Статус </div>}
 							{tableSettings && tableSettings.isShowCondition && <div> Условие </div>}
 							{tableSettings && tableSettings.isShowDeleteRole && <div> Запрет удаления роли </div>}

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import Scripts from '../../shared/utils/clientScripts';
-import { AdditionalApproverItem, TableSettings } from '../../shared/types';
+import { AdditionalApproverItem, RouteTableCaptions, TableSettings } from '../../shared/types';
 import Loader from '../Loader/Loader';
 import AdditionalApproversRow from './AdditionalApproversRow/AdditionalApproversRow';
 
 /** Пропсы компонента */
 interface AdditionalApproversProps {
-	/** Показывать статус */
-	// isShowStatus?: boolean
+	/** Надписи */
+	captions: RouteTableCaptions
 }
 
 /** Таблица Дополнительные согласущие */
-export default function AdditionalApprovers({ }: AdditionalApproversProps) {
+export default function AdditionalApprovers({captions}: AdditionalApproversProps) {
 	const [approversData, setApproversData] = useState<AdditionalApproverItem[]>([]);
 	const [tableSettings, setTableSettings] = useState<TableSettings>()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -38,11 +38,11 @@ export default function AdditionalApprovers({ }: AdditionalApproversProps) {
 			{
 				tableSettings && tableSettings.showAdditionalApprovers &&
 				<div className='additional-approvers-wrapper'>
-					<div className='table-title'>Дополнительные согласующие</div>
+					<div className='table-title'>{captions.additionalTableTitle}</div>
 					<div className="my-table additional-approvers">
 						<div className="additional-approvers__header additional-approvers__row">
-							<div> Согласующий </div>
-							<div> Привлеченный к согласованию </div>
+							<div>{captions.additionalTableInviter}</div>
+							<div>{captions.additionalTableApprover}</div>
 							<div> Статус </div>
 							<div> Комментарий </div>
 						</div>
@@ -58,7 +58,7 @@ export default function AdditionalApprovers({ }: AdditionalApproversProps) {
 						}
 					</div>
 				</div>
-			}
+			} 
 		</>
 	)
 }

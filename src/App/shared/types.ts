@@ -185,3 +185,14 @@ export enum ApprovalStatuses {
     /** Отказано */
     rejected = "Отказано"
 }
+
+/** Надписи в маршруте */
+export type RouteTableCaptions = {
+	title: string,
+	type: string,
+	term: string,
+	termSubTable: string,
+	additionalTableTitle: string,
+	additionalTableInviter: string,
+	additionalTableApprover: string,
+}
