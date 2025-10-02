@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddRoleCallback, ApprovalStatuses, BooleanStr, RoleItem, RoleType, RouteItem, TableSettings } from '../../../shared/types';
+import { AddRoleCallback, ApprovalStatuses, BooleanStr, RoleItem, RoleType, RouteItem, TableSettings, VoteStatus } from '../../../shared/types';
 import { onClickDepartment, onClickGroup, onClickUser } from '../../../shared/utils/utils';
 import { downIcon, removeIcon, upIcon } from '../../../shared/utils/icons';
 import moment from 'moment';
@@ -74,7 +74,10 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 	
 	// Для текущего согласующего = жирный шрифт
 	const getBoldClassName = () => {
-		return role.status == ApprovalStatuses.atApproval || role.status == ApprovalStatuses.atEdit ? "route-table__bold" : null;
+		const approvalCondition = ApprovalStatuses.atApproval || role.status == ApprovalStatuses.atEdit;
+		const voteCondition = role.status == VoteStatus.inProgress;
+
+		return role.status == approvalCondition || voteCondition ? "route-table__bold" : null;
 	}
 
 	/** Получить наименование класса для группы */
