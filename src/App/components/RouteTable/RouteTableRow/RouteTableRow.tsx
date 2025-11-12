@@ -138,14 +138,15 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 					{data.canMove && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
 				</div>
 			</div>
-			{/* Тип согласования */}
+			{/* Тип маршрута */}
 			<div>
-				<select className='route-input-field' name="" id="" onChange={onChangeType} value={data.isParallel ? '1' : '0'}>
+				{data.canEditType && <select className='route-input-field' name="" id="" onChange={onChangeType} value={data.isParallel ? '1' : '0'}>
 					<option value="0">{ApprovalType.sequential}</option>
 					<option value="1">{ApprovalType.parallel}</option>
-				</select>
+				</select>}
+				{!data.canEditType && <div>{data.isParallel ? ApprovalType.parallel : ApprovalType.sequential}</div>}
 			</div>
-			{/* Срок согласования */}
+			{/* Срок маршрута */}
 			{tableSettings && tableSettings.isShowTerm &&
 				<div>
 					<input className='route-input-field' type="number" name="term" id="term" onChange={onChangeTerm} value={data.term} />

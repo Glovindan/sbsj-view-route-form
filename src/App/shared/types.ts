@@ -10,6 +10,8 @@ export class RouteItem {
 	roles: RoleItem[]
 	/** Возможность добавления */
 	canAddUser: boolean
+	/** Возможность изменения Типа */
+	canEditType: boolean
 	/** Удален */
 	deleted: boolean
 	/** Достаточно решения одного из группы */
@@ -28,6 +30,7 @@ export class RouteItem {
 		this.deleted = false
 		this.isSingleApprove = true
 		this.canDelete = true
+		this.canEditType = true
         this.canMove = false
 	}
 }
@@ -120,6 +123,8 @@ export class TableSettings {
 	/** Только для чтения */
 	isReadOnly: boolean
 
+	/** Возможность изменения типа маршрута */
+	canEditType: boolean
 	/** Возможность удаления шага */
 	canDeleteStep: boolean
 	/** Возможность добавления шага */
@@ -157,6 +162,7 @@ export class TableSettings {
 		this.canDeleteRole = true
 		this.canAddRole = true
 		this.canEditRoute = false
+		this.canEditType = true
 
 		this.showAdditionalApprovers = true
 		this.isShowDeadline = true
