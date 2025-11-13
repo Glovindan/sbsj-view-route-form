@@ -20,6 +20,8 @@ export class RouteItem {
 	canDelete: boolean
     /** Возможность перемещения шага */
     canMove: boolean
+    /** Из преднастроенного маршрута */
+	isPreset: boolean
 
 	constructor() {
 		this.step = 0
@@ -32,6 +34,7 @@ export class RouteItem {
 		this.canDelete = true
 		this.canEditType = true
         this.canMove = false
+        this.isPreset = false
 	}
 }
 
@@ -135,6 +138,8 @@ export class TableSettings {
 	canAddRole: boolean
 	/** Возможность Изменения маршрута */
 	canEditRoute: boolean
+	/** Возможность Перемещения предустановленного шага */
+	canMovePresetStep: boolean;
 	/** Показывать дополнительных согласующих */
 	showAdditionalApprovers: boolean
 	/** Показывать срок согласования по задаче (Кол-во часов)*/
@@ -163,6 +168,7 @@ export class TableSettings {
 		this.canAddRole = true
 		this.canEditRoute = false
 		this.canEditType = true
+		this.canMovePresetStep = true
 
 		this.showAdditionalApprovers = true
 		this.isShowDeadline = true

@@ -22,7 +22,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 
 	await randomDelay()
 
-	for (let index = 0; index < 3; index++) {
+	for (let index = 0; index < 5; index++) {
 		const rowItem = new RouteItem()
 		for (let j = 0; j < 3; j++) {
 			rowItem.step = index
@@ -50,6 +50,8 @@ async function getRouteData(): Promise<RouteItem[]> {
 		rowItem.canDelete = Math.random() > 0.5
 		rowItem.canMove = Math.random() > 0.5
 		rowItem.canEditType = false
+		rowItem.isPreset = index < 3
+
 		routeItems.push(rowItem)
 	}
 
@@ -89,6 +91,7 @@ async function getSettings(): Promise<TableSettings> {
 	settings.canEditRoute = true
 	settings.canDeleteStep = true
 	settings.isShowDeleteStep = true
+	settings.canMovePresetStep = false
 	
 	return settings
 }

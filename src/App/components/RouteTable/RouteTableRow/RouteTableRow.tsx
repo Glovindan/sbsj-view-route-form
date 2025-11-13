@@ -27,6 +27,11 @@ interface RouteTableRowProps {
 	gridTemplateColumns?: string
 	/** Индекс строки */
 	index: number
+
+	/** Можно передвигать вверх */
+	canMoveUp: boolean;
+	/** Можно передвигать вниз */
+	canMoveDown: boolean;
 }
 
 /** Тип согласования */
@@ -37,7 +42,7 @@ enum ApprovalType {
 
 /** Строка таблицы Маршрута согласования */
 export default function RouteTableRow(props: RouteTableRowProps) {
-	const { index, data, addRoleCallback, setRowData, tableSettings, isEditMode = false, moveRow, gridTemplateColumns } = props;
+	const { index, data, addRoleCallback, setRowData, tableSettings, isEditMode = false, moveRow, gridTemplateColumns, canMoveUp, canMoveDown } = props;
 	/** Нажатие на кнопку добавления роли */
 	const onClickAddRole = () => {
 		Scripts.toggleAddRole(addRoleCallback)
@@ -134,8 +139,8 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 				<div>{index + 1}</div>
 				<div className="column-action__actions">
 					{tableSettings && tableSettings.canDeleteStep && data.canDelete && <div className="column-action__button" onClick={deleteRow}>{removeIcon}</div>}
-					{data.canMove && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
-					{data.canMove && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
+					{canMoveUp && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
+					{canMoveDown && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
 				</div>
 			</div>
 			{/* Тип маршрута */}
