@@ -40,8 +40,9 @@ enum ApprovalType {
 	sequential = "Последовательное"
 }
 
-function useRolesMovingSettings(roles: RoleItem[]) {
+function useRolesMovingSettings(roles: RoleItem[], isParallel: boolean) {
 	const checkRoleInFinalStatus = (roleItem: RoleItem) => {
+
 		const isRoleFinal = roleItem.status == VoteStatus.complete // Голосование - Голосование завершено
 			|| roleItem.status == ApprovalStatuses.approved // Согласование - Согласовано
 			|| roleItem.status == ApprovalStatuses.rejected // Согласование - Отказано
@@ -51,6 +52,9 @@ function useRolesMovingSettings(roles: RoleItem[]) {
 	}
 
 	const checkCanMoveGlobal = (roleIndex: number) => {
+		// В параллельном всегда возможно перемещение
+		if(isParallel) return true;
+		
 		const currentRole = roles[roleIndex];
 		const isCurrentRoleFinal = checkRoleInFinalStatus(currentRole);
 		if(isCurrentRoleFinal) return false
@@ -175,7 +179,7 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(newRowData)
 	}
 
-	const {getMovingSettings} = useRolesMovingSettings(data.roles);
+	const {getMovingSettings} = useRolesMovingSettings(data.roles, data.isParallel);
 
 	/** Разметка подтаблицы ролей */
 	const rolesLayout = (
