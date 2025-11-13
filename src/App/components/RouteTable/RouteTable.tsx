@@ -12,13 +12,54 @@ interface RouteTableRowProps {
 	captions: RouteTableCaptions
 }
 
+function useMovingSettings(routeData: RouteItem[], tableSettings: TableSettings) {
+	const checkCanMoveGlobal = (routeItem: RouteItem) => {
+		if(!tableSettings.canMoveStep) return false;
+		// Предустановленный элемент нельзя передвигать, если в настройках аиджета запрещено передвигать такие шаги
+		if(!tableSettings.canMovePresetStep && routeItem.isPreset) return false;
+	}
+
+	const checkCanMoveDown = (routeItem: RouteItem) => {
+		if(!checkCanMoveGlobal(routeItem)) return false;
+		
+		const filteredItems = routeData.filter(item => !item.deleted) // Кроме удаленных
+		const lastItme = filteredItems.length ? filteredItems[filteredItems.length - 1] : undefined
+		// Последний элемент нельзя предвигать
+		if(lastItme?.step == routeItem.step) return false;
+
+		return true;
+	}
+
+	const checkCanMoveUp = (routeItem: RouteItem) => {
+		if(!checkCanMoveGlobal(routeItem)) return false;
+		
+		const firstItem = routeData
+			.filter(item => !item.deleted) // Кроме удаленных
+			.filter(item => tableSettings.canMovePresetStep || !item.isPreset) // Если нельзя передвигать предустановленные, то фильтровать предустановленные
+			[0]
+		// Первый элемент (Или первый после предустановленных) нельзя предвигать
+		if(firstItem?.step == routeItem.step) return false;
+
+		return true;
+	}
+
+	const getMovingSettings = (routeItem: RouteItem) => {
+		const canMoveUp = checkCanMoveUp(routeItem)
+		const canMoveDown = checkCanMoveDown(routeItem)
+
+		return {canMoveUp, canMoveDown}
+	}
+
+	return {getMovingSettings}
+}
+
 /** Таблица Маршрута согласования */
 export default function RouteTable({captions}: RouteTableRowProps) {
 	const [routeData, setRouteData] = useState<RouteItem[]>([]);
 	const [initialRouteData, setInitialRouteData] = useState<RouteItem[]>([]);
 	const [tableSettings, setTableSettings] = useState<TableSettings>(Scripts.getDefaultSettings())
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isLoading, setIsLoading] = useState<boolean>(true)
 
 	React.useLayoutEffect(() => {
 		Scripts.getSettings().then((tableSettings) => setTableSettings(tableSettings))
@@ -142,38 +183,7 @@ export default function RouteTable({captions}: RouteTableRowProps) {
 	/** Настройки ширины столбцов */
 	const gridTemplateColumns: string = `55px 1.2fr ${tableSettings?.isShowTerm ? "1fr" : ""} 5fr ${tableSettings?.isShowAddAbility ? "1fr" : ""} ${tableSettings?.isShowIsSingleApprove ? "1fr" : ""}  ${tableSettings?.isShowDeleteStep ? "1fr" : ""}`
 
-	const checkCanMoveDown = (routeItem: RouteItem) => {
-		// Предустановленный элемент нельзя передвигать, если в настройках аиджета запрещено передвигать такие шаги
-		if(!tableSettings.canMovePresetStep && routeItem.isPreset) return false;
-		
-		const filteredItems = routeData.filter(item => !item.deleted) // Кроме удаленных
-		const lastItme = filteredItems.length ? filteredItems[filteredItems.length - 1] : undefined
-		// Последний элемент нельзя предвигать
-		if(lastItme?.step == routeItem.step) return false;
-
-		return true;
-	}
-
-	const checkCanMoveUp = (routeItem: RouteItem) => {
-		// Предустановленный элемент нельзя передвигать, если в настройках аиджета запрещено передвигать такие шаги
-		if(!tableSettings.canMovePresetStep && routeItem.isPreset) return false;
-		
-		const firstItem = routeData
-			.filter(item => !item.deleted) // Кроме удаленных
-			.filter(item => tableSettings.canMovePresetStep || item.isPreset) // Если нельзя передвигать предустановленные, то фильтровать предустановленные
-			[0]
-		// Первый элемент (Или первый после предустановленных) нельзя предвигать
-		if(firstItem?.step == routeItem.step) return false;
-
-		return true;
-	}
-
-	const getMovingSettings = (routeItem: RouteItem) => {
-		const canMoveUp = checkCanMoveUp(routeItem)
-		const canMoveDown = checkCanMoveDown(routeItem)
-
-		return {canMoveUp, canMoveDown}
-	}
+	const {getMovingSettings} = useMovingSettings(routeData, tableSettings);
 
 	return (
 		<div className='route-table-wrapper'>

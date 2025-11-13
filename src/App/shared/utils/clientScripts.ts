@@ -50,7 +50,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 		rowItem.canDelete = Math.random() > 0.5
 		rowItem.canMove = Math.random() > 0.5
 		rowItem.canEditType = false
-		rowItem.isPreset = index < 3
+		rowItem.isPreset = index < 2
 
 		routeItems.push(rowItem)
 	}
@@ -92,6 +92,7 @@ async function getSettings(): Promise<TableSettings> {
 	settings.canDeleteStep = true
 	settings.isShowDeleteStep = true
 	settings.canMovePresetStep = false
+	settings.canMoveStep = true
 	
 	return settings
 }

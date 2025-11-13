@@ -140,6 +140,8 @@ export class TableSettings {
 	canEditRoute: boolean
 	/** Возможность Перемещения предустановленного шага */
 	canMovePresetStep: boolean;
+	/** Возможность Перемещения шага */
+	canMoveStep: boolean;
 	/** Показывать дополнительных согласующих */
 	showAdditionalApprovers: boolean
 	/** Показывать срок согласования по задаче (Кол-во часов)*/
@@ -169,6 +171,7 @@ export class TableSettings {
 		this.canEditRoute = false
 		this.canEditType = true
 		this.canMovePresetStep = true
+		this.canMoveStep = true
 
 		this.showAdditionalApprovers = true
 		this.isShowDeadline = true
