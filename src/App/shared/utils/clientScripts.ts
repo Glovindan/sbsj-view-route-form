@@ -33,7 +33,7 @@ async function getRouteData(): Promise<RouteItem[]> {
 			roleItem.isDeadlineOverdue = true
 			roleItem.employeeId = (Math.random() + 1).toString(36).substring(7)
 			roleItem.employeeName = (Math.random() + 1).toString(36).substring(7)
-			roleItem.status = Math.random() > 0.5 ? ApprovalStatuses.atEdit : ApprovalStatuses.approved
+			roleItem.status = j < 2 ? ApprovalStatuses.approved : ApprovalStatuses.atApproval
 			roleItem.groupId = (Math.random() + 1).toString(36).substring(7)
 			roleItem.groupName = '123' + (Math.random() + 1).toString(36).substring(7)
 
@@ -69,14 +69,14 @@ function saveRouteData(routeData: RouteItem[]) {
 async function toggleAddRole(addRoleCallback: AddRoleCallback): Promise<void> {
 	const roleItem = new RoleItem()
 	roleItem.roleType = RoleType.orgstruct
-	roleItem.employeeId = 'test_id'
-	roleItem.employeeName = 'Test T.'
-	roleItem.status = 'Согласовано'
-	roleItem.groupId = 'test_id'
-	roleItem.groupName = '123'
+	roleItem.employeeId = 'test_id' + Math.floor(100 * Math.random())
+	roleItem.employeeName = 'Test T.' + Math.floor(100 * Math.random())
+	// roleItem.status = ApprovalStatuses.
+	roleItem.groupId = 'test_id' + Math.floor(100 * Math.random())
+	roleItem.groupName = '123' + Math.floor(100 * Math.random())
 
 	roleItem.employeeDepartmentName = 'Test Dep'
-	roleItem.employeeDepartmentId = 'ebae2-dab21bb12f'
+	roleItem.employeeDepartmentId = 'ebae2-dab21bb12f' + Math.floor(100 * Math.random())
 	roleItem.employeeNamePosition = 'Test Position'
 
 	return addRoleCallback([roleItem])

@@ -17,6 +17,8 @@ function useMovingSettings(routeData: RouteItem[], tableSettings: TableSettings)
 		if(!tableSettings.canMoveStep) return false;
 		// Предустановленный элемент нельзя передвигать, если в настройках аиджета запрещено передвигать такие шаги
 		if(!tableSettings.canMovePresetStep && routeItem.isPreset) return false;
+
+		return true;
 	}
 
 	const checkCanMoveDown = (routeItem: RouteItem) => {

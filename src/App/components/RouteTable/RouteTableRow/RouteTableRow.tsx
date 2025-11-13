@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddRoleCallback, BooleanStr, RouteItem, TableSettings } from '../../../shared/types';
+import { AddRoleCallback, ApprovalStatuses, BooleanStr, RoleItem, RouteItem, TableSettings, VoteStatus } from '../../../shared/types';
 import Scripts from '../../../shared/utils/clientScripts';
 import AddItemButton from '../AddItemButton/AddItemButton';
 import RoleRow from '../RoleRow/RoleRow';
@@ -38,6 +38,56 @@ interface RouteTableRowProps {
 enum ApprovalType {
 	parallel = "Параллельное",
 	sequential = "Последовательное"
+}
+
+function useRolesMovingSettings(roles: RoleItem[]) {
+	const checkRoleInFinalStatus = (roleItem: RoleItem) => {
+		const isRoleFinal = roleItem.status == VoteStatus.complete // Голосование - Голосование завершено
+			|| roleItem.status == ApprovalStatuses.approved // Согласование - Согласовано
+			|| roleItem.status == ApprovalStatuses.rejected // Согласование - Отказано
+			|| roleItem.status == ApprovalStatuses.atEdit // Согласование - На устранении замечаний
+		
+		return isRoleFinal;
+	}
+
+	const checkCanMoveGlobal = (roleIndex: number) => {
+		const currentRole = roles[roleIndex];
+		const isCurrentRoleFinal = checkRoleInFinalStatus(currentRole);
+		if(isCurrentRoleFinal) return false
+
+		return true;
+	}
+
+	const checkCanMoveDown = (roleIndex: number) => {
+		if(roleIndex == roles.length - 1) return false
+		
+		if(!checkCanMoveGlobal(roleIndex)) return false
+		
+		return true;
+	}
+	
+
+	const checkCanMoveUp = (roleIndex: number) => {
+		if(roleIndex == 0) return false
+
+		if(!checkCanMoveGlobal(roleIndex)) return false
+
+		const roleBefore = roles[roleIndex - 1];
+		// Если роль перед текущей в финальном статусе
+		const isBeforeRoleFinal = checkRoleInFinalStatus(roleBefore);
+		if(isBeforeRoleFinal) return false;
+
+		return true;
+	}
+
+	const getMovingSettings = (roleIndex: number) => {
+		const canMoveUp = checkCanMoveUp(roleIndex)
+		const canMoveDown = checkCanMoveDown(roleIndex)
+
+		return {canMoveUp, canMoveDown}
+	}
+
+	return {getMovingSettings}
 }
 
 /** Строка таблицы Маршрута согласования */
@@ -125,11 +175,16 @@ export default function RouteTableRow(props: RouteTableRowProps) {
 		setRowData(newRowData)
 	}
 
+	const {getMovingSettings} = useRolesMovingSettings(data.roles);
+
 	/** Разметка подтаблицы ролей */
 	const rolesLayout = (
-		data.roles.map((role, index) =>
-			<RoleRow {...props} roleIndex={index} role={role} moveRow={moveRoleRow} />
-		)
+		data.roles.map((role, index) =>{
+			const {canMoveUp, canMoveDown} = getMovingSettings(index);
+			return (
+				<RoleRow {...props} roleIndex={index} role={role} moveRow={moveRoleRow} canMoveUp={canMoveUp} canMoveDown={canMoveDown} />
+			)
+		})
 	)
 
 	/** Разметка режима редактирования */

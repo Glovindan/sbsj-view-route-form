@@ -25,10 +25,15 @@ interface RoleRowProps {
 	roleIndex: number
 	/** Перенос шага */
 	moveRow: (index: number, isUp: boolean) => void
+
+	/** Можно передвигать вверх */
+	canMoveUp: boolean;
+	/** Можно передвигать вниз */
+	canMoveDown: boolean;
 }
 
 /** Строка подтаблицы с ролями */
-export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode, tableSettings, moveRow }: RoleRowProps) {
+export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatus = false, isEditMode, tableSettings, moveRow, canMoveUp, canMoveDown}: RoleRowProps) {
 	/** Изменение срока согласования */
 	const onChangeTerm = (ev: any) => {
 		data.term = Number(ev.target.value);
@@ -127,8 +132,8 @@ export default function RoleRow({ data, setRowData, role, roleIndex, isShowStatu
 					isEditMode &&
 					<div className="column-action__actions">
 						{tableSettings && tableSettings.canDeleteRole && !role.cantDelete && <div onClick={deleteRow} className="column-action__button">{removeIcon}</div>}
-						{!role.cantMoveUp && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
-						{!role.cantMoveDown && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
+						{canMoveUp && <div onClick={moveRowUp} className="column-action__button">{upIcon}</div>}
+						{canMoveDown && <div onClick={moveRowDown} className="column-action__button">{downIcon}</div>}
 					</div>
 				}
 			</div>
