@@ -44,6 +44,7 @@ function useRolesMovingSettings(roles: RoleItem[], isParallel: boolean) {
 	const checkRoleInFinalStatus = (roleItem: RoleItem) => {
 
 		const isRoleFinal = roleItem.status == VoteStatus.complete // Голосование - Голосование завершено
+			|| roleItem.status == VoteStatus.moved // Голосование - Переведено по процессу
 			|| roleItem.status == ApprovalStatuses.approved // Согласование - Согласовано
 			|| roleItem.status == ApprovalStatuses.rejected // Согласование - Отказано
 			|| roleItem.status == ApprovalStatuses.atEdit // Согласование - На устранении замечаний
