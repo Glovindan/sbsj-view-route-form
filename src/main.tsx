@@ -9,8 +9,8 @@ const rootElement = document.getElementById(Scripts.getElmaUUID());
 if(rootElement) {
 	ReactDOM.createRoot(rootElement as HTMLElement).render(
 		// Для согласования
-		// <App captions={ApprovalCaptions}/>
+		<App captions={ApprovalCaptions}/>
 		// Для голосования
-		<App captions={VotingCaptions}/>
+		// <App captions={VotingCaptions}/>
 	)
 }

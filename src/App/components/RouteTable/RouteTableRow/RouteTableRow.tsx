@@ -53,8 +53,8 @@ function useRolesMovingSettings(roles: RoleItem[], isParallel: boolean) {
 	}
 
 	const checkCanMoveGlobal = (roleIndex: number) => {
-		// В параллельном всегда возможно перемещение
-		if(isParallel) return true;
+		// В параллельном всегда невозможно перемещение
+		if(isParallel) return false;
 		
 		const currentRole = roles[roleIndex];
 		const isCurrentRoleFinal = checkRoleInFinalStatus(currentRole);
